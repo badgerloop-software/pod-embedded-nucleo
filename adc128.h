@@ -6,6 +6,12 @@ const int presADC7Addr = 0x1d;
 
 int initADC(char *name, const int addr);
 int isADCBusy(const int addr);
-float read7VRail(void);
+
+float readBusV();
+float readBusA();
+float read5VRailV();
+float read5VRailA();
+float read7VRailA();
+float read7VRailV(void);
 
 #endif

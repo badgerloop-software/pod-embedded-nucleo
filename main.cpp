@@ -21,7 +21,7 @@ int main() {
     if (initIOX("Braking Solenoids", brakeIOX7Addr)) 
         pc.printf("IOX Failed: Did you check the reset pin?\n\r");    
     while(1) {
-        runDebugTerminal(&pc);
+        runDebugTerminal();
 	ledVal = blink(ledVal);
         wait(0.1);
     }

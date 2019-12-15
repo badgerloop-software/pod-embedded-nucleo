@@ -22,7 +22,23 @@ int isADCBusy(const int adc7BitAddr) {
     return cmd[0] & 0x03; 
 }
 
-float read7VRail() {
+float readBusV() {
+    return 0;
+}
+
+float readBusA() {
+    return 0;
+}
+
+float read5VRailV() {
+    return 0;
+}
+
+float read5VRailA() {
+    return 0;
+}
+
+float read7VRailV() {
     const int adc8BitAddr = railADC7Addr << 1;
     int i = 0x20;
     char data[2] = {0x0, 0x0};
@@ -46,6 +62,10 @@ float read7VRail() {
     }
     float out = ((float)(((0xf & telem[1][1]) << 8) | telem[1][0])) * 0.00097656 / 2;
     return out;    
+}
+
+float read7VRailA () {
+    return 0;
 }
 
 int initADC(char *name, const int adc7BitAddr) {
