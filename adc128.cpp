@@ -22,10 +22,11 @@ int isADCBusy(const int adc7BitAddr) {
     return cmd[0] & 0x03; 
 }
 
-int read7VRail() {
+float read7VRail() {
     const int adc8BitAddr = railADC7Addr << 1;
     int i = 0x20;
     char data[2] = {0x0, 0x0};
+    char telem[8][2];
     for (i = 0x20; i <= 0x27; i++) {
         char cmd[1] = {i};
         
@@ -38,10 +39,13 @@ int read7VRail() {
         }
     
         /* TODO remove */
-        pc.printf("READ CHANNEL %#x: data[0] = %d; data[1] = %d;\n", i, data[0], data[1]);
+        pc.printf("READ CHANNEL %#x: data[0] = %d; data[1] = %d;\n\r", i, data[0], data[1]);
+        telem[i - 0x20][0] = data[0];
+        telem[i - 0x20][1] = data[1];
         wait(0.05);
     }
-    return (data[1] << 8) | data[0];    
+    float out = ((float)(((0xf & telem[1][1]) << 8) | telem[1][0])) * 0.00097656 / 2;
+    return out;    
 }
 
 int initADC(char *name, const int adc7BitAddr) {
@@ -103,8 +107,14 @@ int initADC(char *name, const int adc7BitAddr) {
     if (i2cbus.write(adc8BitAddr, cmd, 2)) {
         return 1;
     }
-    
+   
     wait(0.1);
+    
+    /* Limit Regs */
+/*    reg[0] = */
+/*    for int*/
+
+
     /* Config Reg */
     reg[0] = 0x00;
     if (i2cbus.write(adc8BitAddr, reg, 1)) {
@@ -115,7 +125,7 @@ int initADC(char *name, const int adc7BitAddr) {
         return 1;
     }
     wait(0.1);
-    data[0] &= ~(0x01);
+    data[0] &= ~(0x09);
     data[0] |= 0x01;
     
     cmd[0] = reg[0];

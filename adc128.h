@@ -6,6 +6,6 @@ const int presADC7Addr = 0x1d;
 
 int initADC(char *name, const int addr);
 int isADCBusy(const int addr);
-int read7VRail(void);
+float read7VRail(void);
 
 #endif

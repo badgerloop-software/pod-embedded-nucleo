@@ -1,5 +1,6 @@
 #include "mbed.h"
 #include "adc128.h"
+#include "term.h"
 const int brakeIOX7Addr = 0x20;
 
 DigitalOut myled(LED1);
@@ -18,13 +19,10 @@ int main() {
     initADC("Rails and Temps", railADC7Addr);
     initADC("Pressures", presADC7Addr);
     if (initIOX("Braking Solenoids", brakeIOX7Addr)) 
-        pc.printf("IOX Failed: Did you check the reset pin?\n");    
+        pc.printf("IOX Failed: Did you check the reset pin?\n\r");    
     while(1) {
-        if (ticks++ == 10) {
-            pc.printf("7 Volt Rail: %d\n", read7VRail());
-            ticks = 0;
-        }
-        ledVal = blink(ledVal);
+        runDebugTerminal(&pc);
+	ledVal = blink(ledVal);
         wait(0.1);
     }
 }
