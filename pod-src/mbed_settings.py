@@ -28,7 +28,10 @@ from os.path import join, abspath, dirname
 #ARM_PATH = "C:/Program Files/ARM"
 
 # GCC ARM
-#GCC_ARM_PATH = ""
+#GCC_ARM_PATH = "/home/eboley/Badgerloop/gcc-arm/gcc-arm-none-eabi-9-2019-q4-major/bin/"
+
+# GCC CodeRed
+#GCC_CR_PATH = "C:/code_red/RedSuite_4.2.0_349/redsuite/Tools/bin"
 
 # IAR
 #IAR_PATH = "C:/Program Files (x86)/IAR Systems/Embedded Workbench 7.0/arm"
