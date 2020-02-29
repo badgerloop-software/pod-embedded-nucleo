@@ -1,0 +1,28 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run a multi-line script
+      run: |
+        echo Add other actions to build,
+        echo test, and deploy your project.
+    - name: arm-none-eabi-gcc
+      uses: fiam/arm-none-eabi-gcc@v1
+      with:
+        release: 9-2019-q4
+    - name: compile
+      run: |
+        pip install mbed-cli --user
+        git clone https://github.com/ARMmbed/mbed-os    # Installs the base libraries for MbedOS
+        cd mbed-os
+        pip install -r requirements.txt --user
+        cd ..
+        make build
+
