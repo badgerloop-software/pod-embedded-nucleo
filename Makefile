@@ -14,7 +14,8 @@ flash:
 	@echo "-----------------"
 	@echo "Copying to board"
 	@echo "-----------------"
-	cp $(BUILD_DST)/$(BIN) $(NUCLEO_PATH)
+	-cp $(BUILD_DST)/$(BIN) $(NUCLEO_PATH)
+	-cp $(BUILD_DST)/$(BIN) $(NUCLEO_PATH)1
 
 open:
 	screen /dev/ttyACM0

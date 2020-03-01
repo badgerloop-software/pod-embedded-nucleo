@@ -1,9 +1,10 @@
 #include "mbed.h"
 #include "adc128.h"
 #include "term.h"
+#include "uart.h"
 
-static int numCmds = 7;
-extern Serial pc;
+static int numCmds = 8;
+extern RawSerial pc;
 /* These three arrays are for the user/shell. Keep the indexing in sync and
  * they will work well */
 
@@ -14,7 +15,8 @@ static float (*cmds[])(void) = {
     readBusV,
     readBusA,
     read5VRailV,
-    read5VRailA
+    read5VRailA,
+    chanSend
 };
 
 static char *cmdNames[] = {
@@ -24,7 +26,8 @@ static char *cmdNames[] = {
     "readBusV",
     "readBusA",
     "read5VRailV",
-    "read5VRailA"
+    "read5VRailA",
+    "testSerial"
 };
 
 static char *cmdDescs[] = {
@@ -34,7 +37,8 @@ static char *cmdDescs[] = {
     "Reads the voltage on the main power bus",
     "Reads the current on the main power bus",
     "Reads the voltage on the 5 volt rail",
-    "Reads the current on the 5 volt rail"
+    "Reads the current on the 5 volt rail",
+    "Test serial, sends a ping across the channel"
 };
 
 void runDebugTerminal() {

@@ -2,7 +2,7 @@
 #include "adc128.h"
 
 extern I2C i2cbus;
-extern Serial pc;
+extern RawSerial pc;
 
 int isADCBusy(const int adc7BitAddr) {
     const int adc8BitAddr = adc7BitAddr << 1;

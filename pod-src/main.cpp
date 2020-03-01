@@ -1,11 +1,13 @@
 #include "mbed.h"
 #include "adc128.h"
 #include "term.h"
+#include "uart.h"
+
 const int brakeIOX7Addr = 0x20;
 
 DigitalOut myled(LED1);
 I2C i2cbus(I2C_SDA, I2C_SCL);
-Serial pc(USBTX, USBRX);
+RawSerial pc(USBTX, USBRX);
 
 int initIOX(char *name, const int addr);
 int blink(int ledVal);
@@ -18,6 +20,7 @@ int main() {
     
     initADC("Rails and Temps", railADC7Addr);
     initADC("Pressures", presADC7Addr);
+    chanInit();
     if (initIOX("Braking Solenoids", brakeIOX7Addr)) 
         pc.printf("IOX Failed: Did you check the reset pin?\n\r");    
     while(1) {
