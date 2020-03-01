@@ -13,6 +13,9 @@ make build  # Builds the project linked with MbedOS
 make flash  # Flashs (and builds) the project linked with MbedOS
 ```
 
+If you are missing the needed compilers (ARM GCC), follow this tutorial as well:
+https://wiki.badgerloop.com/index.php/Controls#ARM_GCC_Toolchain_for_Cross-Compiling
+
 This is a very barebones setup guide, for the rest check out:
 https://github.com/ARMmbed/mbed-cli/blob/1.8.3/README.md#installing-mbed-cli
 
