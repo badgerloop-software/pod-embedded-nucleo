@@ -3,7 +3,7 @@
 #include "term.h"
 #include "uart.h"
 
-static int numCmds = 8;
+static int numCmds = 9;
 extern RawSerial pc;
 /* These three arrays are for the user/shell. Keep the indexing in sync and
  * they will work well */
@@ -16,7 +16,8 @@ static float (*cmds[])(void) = {
     readBusA,
     read5VRailV,
     read5VRailA,
-    chanSend
+    testChanSend,
+    testChanRead
 };
 
 static char *cmdNames[] = {
@@ -27,7 +28,8 @@ static char *cmdNames[] = {
     "readBusA",
     "read5VRailV",
     "read5VRailA",
-    "testSerial"
+    "testChanSend",
+    "testChanRead"
 };
 
 static char *cmdDescs[] = {
@@ -38,7 +40,8 @@ static char *cmdDescs[] = {
     "Reads the current on the main power bus",
     "Reads the voltage on the 5 volt rail",
     "Reads the current on the 5 volt rail",
-    "Test serial, sends a ping across the channel"
+    "Sends a message across the serial channel",
+    "Reads the serial channel"
 };
 
 void runDebugTerminal() {
@@ -62,6 +65,7 @@ int waitForCmd() {
         cnt += 1;
     }
     buff[cnt] = '\0';
+    pc.printf("\n\r");
     for (i = 0; i < numCmds; i++) {
         if (!strcmp(buff, cmdNames[i])) {
             return i;
