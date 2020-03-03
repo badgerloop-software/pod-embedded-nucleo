@@ -20,7 +20,6 @@ float testChanRead() {
     int len = 100;
     char buff[len];
     int ret = 0;
-    memset(buff, 0, len); 
     ret = chanRead(buff, len);
 
     pc.printf("RECVD: %s", buff);
