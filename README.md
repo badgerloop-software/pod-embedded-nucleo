@@ -4,11 +4,7 @@
 ```bash
 git clone https://github.com/badgerloop-software/pod-embedded-nucleo
 cd pod-embedded-nucleo
-pip install mbed-cli --user
-git clone https://github.com/ARMmbed/mbed-os    # Installs the base libraries for MbedOS
-cd mbed-os
-pip install -r requirements.txt --user
-cd ..
+make install # Installs build tools
 make build  # Builds the project linked with MbedOS
 make flash  # Flashs (and builds) the project linked with MbedOS
 ```
