@@ -21,6 +21,6 @@ open:
 	screen /dev/ttyACM0
 
 build:
-	mbed compile -v -t $(COMPILER) -m $(TARGET) --source pod-src/ --source mbed-os/ --build $(BUILD_DST)
+	mbed compile -v -t $(COMPILER) -m $(TARGET) --source pod-src/include --source pod-src/src --source mbed-os/ --build $(BUILD_DST)
 
 
