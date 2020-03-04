@@ -3,12 +3,12 @@ NUCLEO_VERSION 	:= L432KC
 TARGET         	:= NUCLEO_$(NUCLEO_VERSION)
 COMPILER       	:= GCC_ARM
 BUILD_DST		:= pod-src/BUILD
-BIN				:= pod-src.bin
+BIN				:= include.bin
 YOUR_PATH		:= `pwd`
 
 ##### USER/OS SPECIFIC #####
 
-NUCLEO_PATH    	:= /run/media/$(USERNAME)/NODE_$(NUCLEO_VERSION)  # Works for Manjaro (maybe all Linux)
+NUCLEO_PATH    	:= /run/media/$(USERNAME)/NODE_$(NUCLEO_VERSION)# Works for Manjaro (maybe all Linux)
 PATH_TO_GCC_ARM := /home/$(USERNAME)/Badgerloop/gcc-arm/gcc-arm-none-eabi-9-2019-q4-major/bin
 
 ############################
