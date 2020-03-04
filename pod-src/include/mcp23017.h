@@ -38,5 +38,6 @@ typedef enum IoxDir {
 /*int ioxSetDir(IoxPin pin, IoxDir dir);*/
 /*int ioxRead(IoxPin pin);*/
 /*int ioxWrite(IoxPin pin, IoxVal val);*/
-float testIOX();
+float testWriteIOX();
+float testReadIOX();
 #endif

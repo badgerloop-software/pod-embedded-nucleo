@@ -72,7 +72,7 @@ class Iox {
 
 
 /* TESTS */
-float testIOX() {
+float testWriteIOX() {
     I2C i2c(PB_7, PB_6);
     Iox iox(&i2c, 0x20);
     for (int i = 0; i < 16; i++) {
@@ -80,10 +80,18 @@ float testIOX() {
             pc.printf("ERROR SETTING DIR\n\r");
         if (iox.write((IoxPin)i, HIGH)) 
             pc.printf("ERROR WRITING PIN\n\r");
+    }
+    return 0.0;
+}
+
+float testReadIOX() {
+    I2C i2c(PB_7, PB_6);
+    Iox iox(&i2c, 0x20);
+    for (int i = 0; i < 16; i++) {
         if (iox.setDir((IoxPin)i, DIR_IN))
             pc.printf("ERROR SETTING DIR\n\r");
         pc.printf("READ FROM PIN: %d\n\r", (int)iox.read((IoxPin)i));
     }
     return 0.0;
-}
 
+}
