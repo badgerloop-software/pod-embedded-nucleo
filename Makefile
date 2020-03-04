@@ -4,7 +4,7 @@ TARGET         	:= NUCLEO_$(NUCLEO_VERSION)
 COMPILER       	:= GCC_ARM
 BUILD_DST		:= pod-src/BUILD
 BIN				:= pod-src.bin
-PATH			:= $(shell pwd)
+YOUR_PATH		:= `pwd`
 
 ##### USER/OS SPECIFIC #####
 
@@ -38,7 +38,7 @@ install:
 	git clone https://github.com/ARMmbed/mbed-os
 	cd mbed-os && pip install -r requirements.txt --user && cd ..
 	mbed config TOOLCHAIN $(COMPILER)
-	mbed config MBED_OS_DIR $(PATH)/mbed-os/
+	mbed config MBED_OS_DIR $(YOUR_PATH)/mbed-os/
 	mbed config TARGET $(TARGET)
 	mbed config $(COMPILER) $(PATH_TO_GCC_ARM) 
 	mbed config GCC_ARM_PATH $(PATH_TO_GCC_ARM)

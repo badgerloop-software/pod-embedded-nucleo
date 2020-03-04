@@ -3,7 +3,7 @@
 
 void runDebugTerminal();
 int waitForCmd();
-float callCmd(int cmd);
+void callCmd(int cmd);
 float help();
 
 #endif
