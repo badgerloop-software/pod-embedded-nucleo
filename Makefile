@@ -3,12 +3,12 @@ NUCLEO_VERSION 	:= L432KC
 TARGET         	:= NUCLEO_$(NUCLEO_VERSION)
 COMPILER       	:= GCC_ARM
 BUILD_DST		:= pod-src/BUILD
-BIN				:= pod-src.bin
-PATH			:= $(shell pwd)
+BIN				:= include.bin
+YOUR_PATH		:= `pwd`
 
 ##### USER/OS SPECIFIC #####
 
-NUCLEO_PATH    	:= /run/media/$(USERNAME)/NODE_$(NUCLEO_VERSION)  # Works for Manjaro (maybe all Linux)
+NUCLEO_PATH    	:= /run/media/$(USERNAME)/NODE_$(NUCLEO_VERSION)# Works for Manjaro (maybe all Linux)
 PATH_TO_GCC_ARM := /home/$(USERNAME)/Badgerloop/gcc-arm/gcc-arm-none-eabi-9-2019-q4-major/bin
 
 ############################
@@ -38,7 +38,7 @@ install:
 	git clone https://github.com/ARMmbed/mbed-os
 	cd mbed-os && pip install -r requirements.txt --user && cd ..
 	mbed config TOOLCHAIN $(COMPILER)
-	mbed config MBED_OS_DIR $(PATH)/mbed-os/
+	mbed config MBED_OS_DIR $(YOUR_PATH)/mbed-os/
 	mbed config TARGET $(TARGET)
 	mbed config $(COMPILER) $(PATH_TO_GCC_ARM) 
 	mbed config GCC_ARM_PATH $(PATH_TO_GCC_ARM)

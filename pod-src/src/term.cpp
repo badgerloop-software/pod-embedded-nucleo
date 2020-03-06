@@ -2,8 +2,9 @@
 #include "adc128.h"
 #include "term.h"
 #include "uart.h"
+#include "mcp23017.h"
 
-static int numCmds = 9;
+static int numCmds = 11;
 extern RawSerial pc;
 /* These three arrays are for the user/shell. Keep the indexing in sync and
  * they will work well */
@@ -17,7 +18,9 @@ static float (*cmds[])(void) = {
     read5VRailV,
     read5VRailA,
     testChanSend,
-    testChanRead
+    testChanRead,
+    testWriteIOX,
+    testReadIOX
 };
 
 static char *cmdNames[] = {
@@ -29,7 +32,9 @@ static char *cmdNames[] = {
     "read5VRailV",
     "read5VRailA",
     "testChanSend",
-    "testChanRead"
+    "testChanRead",
+    "testWriteIOX",
+    "testReadIOX"
 };
 
 static char *cmdDescs[] = {
@@ -41,7 +46,9 @@ static char *cmdDescs[] = {
     "Reads the voltage on the 5 volt rail",
     "Reads the current on the 5 volt rail",
     "Sends a message across the serial channel",
-    "Reads the serial channel"
+    "Reads the serial channel",
+    "Tests writing to every pin in the IO Expander",
+    "Tests reading from every pin in the IO Expander"
 };
 
 void runDebugTerminal() {
@@ -53,7 +60,6 @@ void runDebugTerminal() {
 int waitForCmd() {
     char buff[100];
     int cnt = 0;
-    int i = 0;
     pc.printf("Waiting for input...\n\r");
     while (cnt < 99) {
         buff[cnt] = pc.getc();
@@ -66,7 +72,7 @@ int waitForCmd() {
     }
     buff[cnt] = '\0';
     pc.printf("\n\r");
-    for (i = 0; i < numCmds; i++) {
+    for (int i = 0; i < numCmds; i++) {
         if (!strcmp(buff, cmdNames[i])) {
             return i;
         }
@@ -74,18 +80,17 @@ int waitForCmd() {
     return -1;
 }
 
-float callCmd(int cmd) {
+void callCmd(int cmd) {
     if (cmd == -1) {
         pc.printf("Invalid Command\n\r");
-        return -1.0;
+    } else {
+        pc.printf("Value: %f\n\r", cmds[cmd]());
     }
-    pc.printf("Value: %f\n\r", cmds[cmd]());
-    return 1.0;
 }
  
 float help() {
     int i;
-    pc.printf("Welcome to the Ezra's little MBed Oasis.\n\r");
+    pc.printf("Welcome to Ezra's little Mbed Oasis.\n\r");
     pc.printf("Commands:\n\r");
     for (i = 0; i < numCmds; i++) {
         pc.printf("\t%s - %s\n\r", cmdNames[i], cmdDescs[i]);

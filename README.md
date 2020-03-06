@@ -18,5 +18,9 @@ https://github.com/ARMmbed/mbed-cli/blob/1.8.3/README.md#installing-mbed-cli
 As questions or issues with the workflow arise, update the README's FAQ so that
 we can keep track of them!
 
+## Development
+Please do all development on a branch from dev. For example, if you want to work
+on the io expander, you can branch dev-iox from dev: `git checkout -b dev-iox`.
+
 ## FAQ:
 -
