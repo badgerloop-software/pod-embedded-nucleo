@@ -65,3 +65,23 @@ float read7VRailA() {
     float ret = adc.readChannel(chan) * SCALAR;
     return ret;
 }
+
+float readTherm1() {
+    AdcChan chan = CHAN_6;
+    if (adc.isBusy()) {
+        return -1;
+    }
+
+    float ret = adc.readChannel(chan) * SCALAR;
+    return ret;
+}
+
+float readTherm2() {
+    AdcChan chan = CHAN_7;
+    if (adc.isBusy()) {
+        return -1;
+    }
+    
+    float ret = adc.readChannel(chan) * SCALAR;
+    return ret;
+}

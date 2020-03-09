@@ -9,5 +9,6 @@ float read5VRailV();
 float read5VRailA();
 float read7VRailA();
 float read7VRailV();
-
+float readTherm1();
+float readTherm2();
 #endif
