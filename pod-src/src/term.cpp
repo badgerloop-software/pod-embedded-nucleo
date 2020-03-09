@@ -1,8 +1,8 @@
 #include "mbed.h"
-#include "adc128.h"
 #include "term.h"
 #include "uart.h"
 #include "mcp23017.h"
+#include "boardTelem.h"
 
 static int numCmds = 11;
 extern RawSerial pc;

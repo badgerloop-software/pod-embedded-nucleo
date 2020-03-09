@@ -1,15 +1,15 @@
 #include "mbed.h"
 #include "adc128.h"
+#include "mcp23017.h"
+#include "boardTelem.h"
 #include "term.h"
 #include "uart.h"
 
-const int brakeIOX7Addr = 0x20;
-
 DigitalOut myled(LED1);
-I2C i2cbus(I2C_SDA, I2C_SCL);
+I2C i2c(PB_7, PB_6);
 RawSerial pc(USBTX, USBRX);
+Iox brakeIOX(&i2c, 0x20);
 
-int initIOX(char *name, const int addr);
 int blink(int ledVal);
 
 int main() {
@@ -18,11 +18,13 @@ int main() {
     
     wait(0.1);
     
-    initADC("Rails and Temps", railADC7Addr);
-    initADC("Pressures", presADC7Addr);
+    initBoardTelem();
     chanInit();
-    if (initIOX("Braking Solenoids", brakeIOX7Addr)) 
-        pc.printf("IOX Failed: Did you check the reset pin?\n\r");    
+    if (!brakeIOX.ping()) 
+        pc.printf("Braking IOX found at address %x\n\r", brakeIOX.getAddress7());
+    else {
+        pc.printf("Braking IOX Not Found\n\r");    
+    }
     while(1) {
         runDebugTerminal();
 	ledVal = blink(ledVal);
@@ -30,21 +32,6 @@ int main() {
     }
 }
 
-int initIOX(char *name, const int iox7BitAddr) {
-    const int iox8BitAddr = iox7BitAddr << 1;
-    
-    char cmd[2];
-    cmd[0] = 0x05;
-    cmd[1] = 0x00;
-    
-    if (i2cbus.write(iox8BitAddr, cmd, 2)) {
-        return 1;    
-    }
-    
-    // Doesn't prove much, just that read/write didn't fail
-    pc.printf("IOX for %s at address %#x Found: manufacturer ID = %#x\n", name, iox7BitAddr, cmd[0]);    /* Should be: 0x01 */
-    return 0;    
-}
 
 int blink(int ledVal) {
     myled = ledVal;

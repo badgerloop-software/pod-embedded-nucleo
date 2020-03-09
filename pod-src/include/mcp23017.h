@@ -31,6 +31,27 @@ typedef enum IoxDir {
     DIR_IN
 } IoxDir;
 
+class Iox {
+    private:
+        char readAllPins(int reg); 
+        int getPinNum(IoxPin pin);
+        const int gpioa = 0x12;
+        const int gpiob = 0x13;
+        const int iodira = 0x00;
+        const int iodirb = 0x01;
+        int addr8bit;
+        I2C *i2c;
+    public:
+        const int numPins = 16;
+        Iox(I2C *i2c, int addr7bit);
+        int getAddress7(void);
+        int ping(void);
+        int reset(void);
+        int setDir(IoxPin pin, IoxDir dir);
+        IoxVal read(IoxPin pin);
+        int write(IoxPin pin, IoxVal val);
+};
+
 
 /* API */
 /*int ioxSetup();*/
