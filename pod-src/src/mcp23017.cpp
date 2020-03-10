@@ -4,71 +4,76 @@
 
 extern RawSerial pc;
 
-class Iox {
-    private:
-        const int gpioa = 0x12;
-        const int gpiob = 0x13;
-        const int iodira = 0x00;
-        const int iodirb = 0x01;
-        int addr8bit;
-        I2C *i2c;
+char Iox::readAllPins(int reg) {
+    char cmd[1];
+    cmd[0] = reg;
+    i2c->write(addr8bit, cmd, 1);
+    cmd[0] = 0;
+    i2c->read(addr8bit, cmd, 1);
+    return cmd[0];
+}
 
-        char readAllPins(int reg) {
-            char cmd[1];
-            cmd[0] = reg;
-            i2c->write(addr8bit, cmd, 1);
-            cmd[0] = 0;
-            i2c->read(addr8bit, cmd, 1);
-            return cmd[0];
-        }
+int Iox::getPinNum(IoxPin pin) {
+    return pin > GPIOA_7 ? (int) pin - GPIOB_0 : (int) pin;
+}
 
-        int getPinNum(IoxPin pin) {
-            return pin > GPIOA_7 ? (int) pin - GPIOB_0 : (int) pin;
-        }
 
-    public:
-        const int numPins = 16;
+Iox::Iox(I2C *i2c, int addr7bit) {
+    this->i2c = i2c;
+    this->addr8bit = addr7bit << 1;   
+}
 
-        Iox(I2C *i2c, int addr7bit) {
-            this->i2c = i2c;
-            this->addr8bit = addr7bit << 1;   
-        }
-        
-        int reset() {
-            return 0;
-        }
+int Iox::getAddress7() {
+    return addr8bit >> 1;
+}
 
-        int setDir(IoxPin pin, IoxDir dir) {
-            int reg = pin > GPIOA_7 ? iodirb : iodira;
-            char cmd[2];
-            cmd[0] = reg;
-            if (dir == DIR_OUT) {
-                cmd[1] = readAllPins(reg) & ~(1 << getPinNum(pin));
-            } else {
-                cmd[1] = readAllPins(reg) | (1 << getPinNum(pin));
-            }
-            return i2c->write(addr8bit, cmd, 2);
-        }
-        
-        IoxVal read(IoxPin pin) {
-            int reg = pin > GPIOA_7 ? gpiob : gpioa;
-            int pinNum = getPinNum(pin);
-            return ((readAllPins(reg) >> pinNum) & 1) ? HIGH : LOW;
-        }
+int Iox::ping() {
+    char cmd[2];
+    cmd[0] = 0x05;
+    cmd[1] = 0x00;
 
-        int write(IoxPin pin, IoxVal val) {
-            char cmd[2];
-            int reg = pin > GPIOA_7 ? gpiob : gpioa;
-            int pinNum = getPinNum(pin);
-            cmd[0] = reg;
-            if (val == HIGH) {
-                cmd[1] = readAllPins(reg) | (1 << pinNum);
-            } else {
-                cmd[1] = readAllPins(reg) & ~(1 << pinNum);
-            }
-            return i2c->write(addr8bit, cmd, 2);
-        }
-};
+    /* Gets Manufac. ID, not sure if we care */
+    if (i2c->write(addr8bit, cmd, 2)) {
+        return 1;
+    }
+
+    return 0;
+}
+
+int Iox::reset() {
+    return 0;
+}
+
+int Iox::setDir(IoxPin pin, IoxDir dir) {
+    int reg = pin > GPIOA_7 ? iodirb : iodira;
+    char cmd[2];
+    cmd[0] = reg;
+    if (dir == DIR_OUT) {
+        cmd[1] = readAllPins(reg) & ~(1 << getPinNum(pin));
+    } else {
+        cmd[1] = readAllPins(reg) | (1 << getPinNum(pin));
+    }
+    return i2c->write(addr8bit, cmd, 2);
+}
+
+IoxVal Iox::read(IoxPin pin) {
+    int reg = pin > GPIOA_7 ? gpiob : gpioa;
+    int pinNum = getPinNum(pin);
+    return ((readAllPins(reg) >> pinNum) & 1) ? HIGH : LOW;
+}
+
+int Iox::write(IoxPin pin, IoxVal val) {
+    char cmd[2];
+    int reg = pin > GPIOA_7 ? gpiob : gpioa;
+    int pinNum = getPinNum(pin);
+    cmd[0] = reg;
+    if (val == HIGH) {
+        cmd[1] = readAllPins(reg) | (1 << pinNum);
+    } else {
+        cmd[1] = readAllPins(reg) & ~(1 << pinNum);
+    }
+    return i2c->write(addr8bit, cmd, 2);
+}
 
 
 /* TESTS */

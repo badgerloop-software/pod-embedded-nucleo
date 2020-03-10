@@ -1,10 +1,10 @@
 #include "mbed.h"
-#include "adc128.h"
 #include "term.h"
 #include "uart.h"
 #include "mcp23017.h"
+#include "boardTelem.h"
 
-static int numCmds = 11;
+static int numCmds = 13;
 extern RawSerial pc;
 /* These three arrays are for the user/shell. Keep the indexing in sync and
  * they will work well */
@@ -17,6 +17,8 @@ static float (*cmds[])(void) = {
     readBusA,
     read5VRailV,
     read5VRailA,
+    readTherm1,
+    readTherm2,
     testChanSend,
     testChanRead,
     testWriteIOX,
@@ -31,6 +33,8 @@ static char *cmdNames[] = {
     "readBusA",
     "read5VRailV",
     "read5VRailA",
+    "readTherm1",
+    "readTherm2",
     "testChanSend",
     "testChanRead",
     "testWriteIOX",
@@ -45,6 +49,8 @@ static char *cmdDescs[] = {
     "Reads the current on the main power bus",
     "Reads the voltage on the 5 volt rail",
     "Reads the current on the 5 volt rail",
+    "Reads the temperature on thermistor 1",
+    "Reads the temperature on thermistor 2",
     "Sends a message across the serial channel",
     "Reads the serial channel",
     "Tests writing to every pin in the IO Expander",
@@ -55,7 +61,6 @@ void runDebugTerminal() {
     int cmd = waitForCmd();  // Waits for a command
     callCmd(cmd);
 }
-
 
 int waitForCmd() {
     char buff[100];
