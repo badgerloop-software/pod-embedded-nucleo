@@ -1,7 +1,7 @@
 #ifndef __BADGERLOOP_UART_H__
 #define __BADGERLOOP_UART_H__
 
-void chanInit(void);
+int initChan(void);
 
 /* TESTS */
 

@@ -15,7 +15,7 @@ PATH_TO_GCC_ARM := /home/$(USERNAME)/Badgerloop/gcc-arm/gcc-arm-none-eabi-9-2019
 
 .PHONY: all build flash open install
 
-all: build flash
+all: post build flash
 
 flash: 
 	@echo "-----------------"
@@ -31,6 +31,11 @@ open:
 
 build:
 	mbed compile -v -t $(COMPILER) -m $(TARGET) --source pod-src/include --source pod-src/src --source mbed-os/ --build $(BUILD_DST)
+
+post:
+	cd pod-src/src
+	python3 POST.py
+	cd ../..
 
 # installs Mbed related stuff
 install:

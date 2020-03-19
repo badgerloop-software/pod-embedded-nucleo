@@ -53,8 +53,9 @@ int chanRead(char *buff, int len) {
     return (float)len;
 }
 
-void chanInit() {
+int initChan() {
     chan.attach(&callback);
+    return 0;
 }
 
 void chanSend(char *msg) {
