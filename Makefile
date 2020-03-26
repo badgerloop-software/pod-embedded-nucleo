@@ -17,12 +17,23 @@ PATH_TO_GCC_ARM := /home/$(USERNAME)/Badgerloop/gcc-arm/gcc-arm-none-eabi-9-2019
 
 all: post build flash
 
+rem: post build rem-flash rem-force
+
 flash: 
 	@echo "-----------------"
 	@echo "Copying to board"
 	@echo "-----------------"
 	-cp $(BUILD_DST)/$(BIN) $(NUCLEO_PATH)
 	-cp $(BUILD_DST)/$(BIN) $(NUCLEO_PATH)1
+
+rem-flash:
+	@echo "-----------------"
+	@echo "Remote Flash"
+	@echo "-----------------"
+	-scp $(BUILD_DST)/$(BIN) pi:/media/nucleo
+
+rem-force:
+	ssh pi sync
 
 # Lazy way to open a terminal to control a nucleo, can't promise it'll work for
 # you
@@ -33,9 +44,7 @@ build:
 	mbed compile -v -t $(COMPILER) -m $(TARGET) --source pod-src/include --source pod-src/src --source mbed-os/ --build $(BUILD_DST)
 
 post:
-	cd pod-src/src
-	python3 POST.py
-	cd ../..
+	cd pod-src/src && python3 POST.py
 
 # installs Mbed related stuff
 install:

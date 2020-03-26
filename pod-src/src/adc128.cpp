@@ -126,7 +126,7 @@ int Adc::isBusy() {
     if (i2c->read(addr8, cmd, 1)) {
         return 1;    
     }
-
+    pc.printf("Check success: cmd[0] & 0x03 == %d\n\r", cmd[0] & 0x03);
     /* 0x01 means its powering up, 0x02 is converting, we just generally want to know if it is free */
     return cmd[0] & 0x03; 
 }
