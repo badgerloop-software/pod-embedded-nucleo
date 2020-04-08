@@ -7,7 +7,8 @@ void BUart::callback() {
 }
 
 BUart::BUart() : chan(PA_9, PA_10, BAUD) {
-    (this->chan).attach(&BUart::callback);
+    void (*fptr)() = (void (*)())(&BUart::callback);
+    (this->chan).attach(fptr);
 }
 
 int BUart::read(char *buff, int len) {

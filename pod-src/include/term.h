@@ -4,6 +4,6 @@
 void runDebugTerminal();
 int waitForCmd();
 void callCmd(int cmd);
-float help();
+uint16_t help();
 
 #endif

@@ -59,6 +59,6 @@ class Iox {
 /*int ioxSetDir(IoxPin pin, IoxDir dir);*/
 /*int ioxRead(IoxPin pin);*/
 /*int ioxWrite(IoxPin pin, IoxVal val);*/
-float testWriteIOX();
-float testReadIOX();
+uint16_t testWriteIOX();
+uint16_t testReadIOX();
 #endif

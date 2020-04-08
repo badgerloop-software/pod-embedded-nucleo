@@ -1,15 +1,16 @@
 #include "mbed.h"
+#include <stdint.h>
 #include "term.h"
 #include "buart.h"
 #include "mcp23017.h"
 #include "boardTelem.h"
 
-static int numCmds = 13;
+static int numCmds = 11;
 extern RawSerial pc;
 /* These three arrays are for the user/shell. Keep the indexing in sync and
  * they will work well */
 
-static float (*cmds[])(void) = {
+static uint16_t (*cmds[])(void) = {
     help,
     read7VRailV,  
     read7VRailA,
@@ -19,8 +20,6 @@ static float (*cmds[])(void) = {
     read5VRailA,
     readTherm1,
     readTherm2,
-    testChanSend,
-    testChanRead,
     testWriteIOX,
     testReadIOX
 };
@@ -35,8 +34,6 @@ static char *cmdNames[] = {
     "read5VRailA",
     "readTherm1",
     "readTherm2",
-    "testChanSend",
-    "testChanRead",
     "testWriteIOX",
     "testReadIOX"
 };
@@ -51,8 +48,6 @@ static char *cmdDescs[] = {
     "Reads the current on the 5 volt rail",
     "Reads the temperature on thermistor 1",
     "Reads the temperature on thermistor 2",
-    "Sends a message across the serial channel",
-    "Reads the serial channel",
     "Tests writing to every pin in the IO Expander",
     "Tests reading from every pin in the IO Expander"
 };
@@ -93,7 +88,7 @@ void callCmd(int cmd) {
     }
 }
  
-float help() {
+uint16_t help() {
     int i;
     pc.printf("Welcome to Ezra's little Mbed Oasis.\n\r");
     pc.printf("Commands:\n\r");
