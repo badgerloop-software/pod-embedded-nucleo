@@ -4,8 +4,9 @@
 #include "buart.h"
 #include "mcp23017.h"
 #include "boardTelem.h"
+#include "comms.h"
 
-static int numCmds = 11;
+static int numCmds = 12;
 extern RawSerial pc;
 /* These three arrays are for the user/shell. Keep the indexing in sync and
  * they will work well */
@@ -21,7 +22,8 @@ static uint16_t (*cmds[])(void) = {
     readTherm1,
     readTherm2,
     testWriteIOX,
-    testReadIOX
+    testReadIOX,
+    testRecvData
 };
 
 static char *cmdNames[] = {
@@ -35,7 +37,8 @@ static char *cmdNames[] = {
     "readTherm1",
     "readTherm2",
     "testWriteIOX",
-    "testReadIOX"
+    "testReadIOX",
+    "testRecvData"
 };
 
 static char *cmdDescs[] = {
@@ -49,7 +52,8 @@ static char *cmdDescs[] = {
     "Reads the temperature on thermistor 1",
     "Reads the temperature on thermistor 2",
     "Tests writing to every pin in the IO Expander",
-    "Tests reading from every pin in the IO Expander"
+    "Tests reading from every pin in the IO Expander",
+    "Dumps data received over serial"
 };
 
 void runDebugTerminal() {

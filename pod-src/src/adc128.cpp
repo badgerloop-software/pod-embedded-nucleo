@@ -96,18 +96,20 @@ int Adc::init() {
     return 0;
 }
 
+/* TODO: Possible optimization, if we store as 2 8 bit ints, we could then
+ * directly send rather than converting back */
 uint16_t Adc::readChannel(AdcChan chan) {
     char cmd[1] = {(char) chan};
-    char data[2];
+    char d[2];
 
     if (i2c->write(addr8, cmd, 1)) {
         return 0;
     }
 
-    if (i2c->read(addr8, data, 2)) {
+    if (i2c->read(addr8, d, 2)) {
         return 0;
     }
-    uint16_t ret = ((( (uint16_t) data[1]) & 0xf) << 8) | ((uint16_t) data[0]);
+    uint16_t ret = ((( (uint16_t) d[1]) & 0xf) << 8) | ((uint16_t) d[0]);
     return ret;
 }
 

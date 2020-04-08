@@ -2,7 +2,7 @@
 #define __BADGERLOOP_UART_H__
 
 #include "mbed.h"
-
+#include "packet.h"
 
 int initChan(void);
 
@@ -20,11 +20,10 @@ class BUart {
         RawSerial chan;
         CircularBuffer<char, 512> rxBuff;
         void callback();
-
     public:
         BUart();
         int read(char *buff, int len);
-        void write(char *payload);
+        void write(BPacket *pkt);
 };
 
 

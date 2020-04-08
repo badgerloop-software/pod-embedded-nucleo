@@ -6,6 +6,7 @@
 #include "buart.h"
 #include "post.h"
 #include "data.h"
+#include "comms.h"
 
 I2C i2c(PB_7, PB_6);
 RawSerial pc(USBTX, USBRX);
@@ -20,6 +21,7 @@ int main() {
     Post(); 
     while(1) {
         harvestBoardTelem();
+        sendDataPacket();
         runDebugTerminal();
         wait(0.1);
     }

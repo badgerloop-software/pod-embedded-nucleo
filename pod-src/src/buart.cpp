@@ -1,5 +1,6 @@
 #include "mbed.h"
 #include "buart.h"
+#include "packet.h"
 
 void BUart::callback() {
     if (!rxBuff.full())
@@ -26,6 +27,6 @@ int BUart::read(char *buff, int len) {
     return len;
 }
 
-void BUart::write(char *payload) {
-    (this->chan).printf("%s", payload);
+void BUart::write(BPacket *pkt) {
+    (this->chan).printf("%s", pkt->getPayload());
 }

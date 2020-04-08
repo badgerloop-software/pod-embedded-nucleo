@@ -3,4 +3,10 @@
 
 int initComms();
 
+int sendDataPacket();
+
+int sendCmdPacket();
+
+uint16_t testRecvData();
+
 #endif
