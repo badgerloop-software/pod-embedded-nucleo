@@ -18,7 +18,7 @@ typedef enum IoxPin {
     GPIOB_4,
     GPIOB_5,
     GPIOB_6,
-    GPIOB_7,
+    GPIOB_7
 } IoxPin;
 
 typedef enum IoxVal {
