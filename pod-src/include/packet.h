@@ -68,9 +68,9 @@ class BPacket {
             return size;
         }
 
-        void dump(RawSerial *pc) {
+        void dump() {
             // Print contents of packet
-            pc->printf("%s\n\r", this->getPayload());
+            printf("%s\n\r", this->getPayload());
         }
 
 };

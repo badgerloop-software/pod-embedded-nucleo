@@ -4,7 +4,6 @@
 #include "data.h"
 
 extern Data data;
-extern RawSerial pc;
 static BUart beagle;
 
 int initComms() {
@@ -28,6 +27,6 @@ int sendCmdPacket() {
 uint16_t testRecvData() {
     char buff[34];
     uint16_t ret = (uint16_t)beagle.read(buff, 34);
-    pc.printf("DATA RECVD: %s\n\r", buff);
+    printf("DATA RECVD: %s\n\r", buff);
     return ret;
 }

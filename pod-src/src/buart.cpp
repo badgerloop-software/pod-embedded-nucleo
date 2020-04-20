@@ -3,8 +3,11 @@
 #include "packet.h"
 
 void BUart::callback() {
-    if (!rxBuff.full())
-        rxBuff.push(chan.getc());
+    if (!rxBuff.full()) {
+        char buff[1];
+        chan.read(buff, 1);
+        rxBuff.push(buff[0]);
+    }
 }
 
 BUart::BUart() : chan(PA_9, PA_10, BAUD) {
@@ -28,5 +31,5 @@ int BUart::read(char *buff, int len) {
 }
 
 void BUart::write(BPacket *pkt) {
-    (this->chan).printf("%s", pkt->getPayload());
+    (this->chan).write(pkt->getPayload(), pkt->getSize());
 }

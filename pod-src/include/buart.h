@@ -17,7 +17,7 @@ class BUart {
     private:
         const int BAUD = 9600;
         const int BUFF_SIZE = 512;
-        RawSerial chan;
+        UnbufferedSerial chan;
         CircularBuffer<char, 512> rxBuff;
         void callback();
     public:
