@@ -5,6 +5,8 @@ COMPILER       	:= GCC_ARM
 BUILD_DST		:= pod-src/BUILD
 BIN				:= include.bin
 YOUR_PATH		:= `pwd`
+PI				:= 71.90.87.132
+PI_UNAME		:= bloophacker
 
 ##### USER/OS SPECIFIC #####
 
@@ -30,10 +32,11 @@ rem-flash:
 	@echo "-----------------"
 	@echo "Remote Flash"
 	@echo "-----------------"
-	-scp $(BUILD_DST)/$(BIN) pi:/media/nucleo
+	-scp $(BUILD_DST)/$(BIN) $(PI_UNAME)@$(PI):/media/nucleo_main
+
 
 rem-force:
-	ssh pi sync
+	ssh $(PI_UNAME)@$(PI) sync
 
 # Lazy way to open a terminal to control a nucleo, can't promise it'll work for
 # you

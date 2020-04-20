@@ -1,8 +1,6 @@
 #include "mbed.h"
 #include "adc128.h"
 
-extern RawSerial pc;
-
 Adc::Adc(I2C *i2c, int addr7) {
     this->addr8 = addr7 << 1;
     this->i2c = i2c;
@@ -33,7 +31,7 @@ int Adc::init() {
         return 1;
     }
 
-    wait(0.1);
+    wait_us(10000);
 
     /* Conv rate reg*/
     reg[0] = 0x07;
@@ -56,7 +54,7 @@ int Adc::init() {
         return 1;
     }
 
-    wait(0.1);
+    wait_us(10000);
 
     /* Limit Regs */
     /*    reg[0] = */
@@ -72,7 +70,7 @@ int Adc::init() {
     if (i2c->read(addr8, data, 1)) {
         return 1;
     }
-    wait(0.1);
+    wait_us(10000);
     data[0] &= ~(0x09);
     data[0] |= 0x01;
 
@@ -83,7 +81,7 @@ int Adc::init() {
         return 1;
     }
 
-    wait(0.1);
+    wait_us(10000);
 
     if (i2c->write(addr8, reg, 1)) {
         return 1;
@@ -128,13 +126,13 @@ int Adc::isBusy() {
     if (i2c->read(addr8, cmd, 1)) {
         return 1;    
     }
-    pc.printf("Check success: cmd[0] & 0x03 == %d\n\r", cmd[0] & 0x03);
+    printf("Check success: cmd[0] & 0x03 == %d\n\r", cmd[0] & 0x03);
     /* 0x01 means its powering up, 0x02 is converting, we just generally want to know if it is free */
     return cmd[0] & 0x03; 
 }
 
 int Adc::debug() {
-    pc.printf("ADC FOUND\n\r");
+    printf("ADC FOUND\n\r");
     return 0;
 }
 
