@@ -32,9 +32,9 @@ def gen_post(sensors):
 def gen_init(init): 
     string = """
     if (!{0})
-        pc.printf("{0} : SUCCESS\\n\\r");
+        printf("{0} : SUCCESS\\n\\r");
     else 
-        pc.printf("[WARN] {0} Failed to initialize\\n\\r");
+        printf("[WARN] {0} Failed to initialize\\n\\r");
 """.format(init)
     return string
 
@@ -61,12 +61,11 @@ if __name__ == "__main__":
                 builder = add_include(builder, f.replace("cpp", "h"))
                 inits.append(init)
 
-    builder = builder + "extern RawSerial pc;\n"
     builder = builder + "void Post() {\n"
-    builder = builder + "pc.printf(\"========= Badgerloop Mbed Initilization Sequence =========\\n\\r\");\n"
+    builder = builder + "printf(\"========= Badgerloop Mbed Initilization Sequence =========\\n\\r\");\n"
     for init in inits:
         builder = builder + gen_init(init)
-    builder = builder + "pc.printf(\"========= Badgerloop Mbed Initilization Complete =========\\n\\r\");\n"
+    builder = builder + "printf(\"========= Badgerloop Mbed Initilization Complete =========\\n\\r\");\n"
     builder = builder + "\n}\n"
     write_file("POST.cpp", builder)
     gen_include("post", ["void Post()"])

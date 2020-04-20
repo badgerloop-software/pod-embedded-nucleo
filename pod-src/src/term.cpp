@@ -5,7 +5,6 @@
 #include "boardTelem.h"
 
 static int numCmds = 13;
-extern RawSerial pc;
 /* These three arrays are for the user/shell. Keep the indexing in sync and
  * they will work well */
 
@@ -65,10 +64,10 @@ void runDebugTerminal() {
 int waitForCmd() {
     char buff[100];
     int cnt = 0;
-    pc.printf("Waiting for input...\n\r");
+    printf("Waiting for input...\n\r");
     while (cnt < 99) {
-        buff[cnt] = pc.getc();
-        pc.printf("%c", buff[cnt]);
+        buff[cnt] = getchar();
+        printf("%c", buff[cnt]);
         if (buff[cnt] == '\r' && cnt != 0)
             break;
         else if (buff[cnt] == '\r' && cnt == 0)
@@ -76,7 +75,7 @@ int waitForCmd() {
         cnt += 1;
     }
     buff[cnt] = '\0';
-    pc.printf("\n\r");
+    printf("\n\r");
     for (int i = 0; i < numCmds; i++) {
         if (!strcmp(buff, cmdNames[i])) {
             return i;
@@ -87,18 +86,18 @@ int waitForCmd() {
 
 void callCmd(int cmd) {
     if (cmd == -1) {
-        pc.printf("Invalid Command\n\r");
+        printf("Invalid Command\n\r");
     } else {
-        pc.printf("Value: %f\n\r", cmds[cmd]());
+        printf("Value: %f\n\r", cmds[cmd]());
     }
 }
  
 float help() {
     int i;
-    pc.printf("Welcome to Ezra's little Mbed Oasis.\n\r");
-    pc.printf("Commands:\n\r");
+    printf("Welcome to Ezra's little Mbed Oasis.\n\r");
+    printf("Commands:\n\r");
     for (i = 0; i < numCmds; i++) {
-        pc.printf("\t%s - %s\n\r", cmdNames[i], cmdDescs[i]);
+        printf("\t%s - %s\n\r", cmdNames[i], cmdDescs[i]);
     }
     return 0;
 }

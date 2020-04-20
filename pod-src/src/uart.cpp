@@ -5,8 +5,7 @@
 #define BUFF_SIZE 256
 #define BAUD      9600
 
-static RawSerial chan(PA_9, PA_10, BAUD);
-extern RawSerial pc;
+static BufferedSerial chan(PA_9, PA_10, BAUD);
 static CircularBuffer<char, BUFF_SIZE> rxBuff;
 
 /* Be careful with this, it's fickle */
@@ -22,7 +21,7 @@ float testChanRead() {
     int ret = 0;
     ret = chanRead(buff, len);
 
-    pc.printf("RECVD: %s", buff);
+    printf("RECVD: %s", buff);
     return (float) ret;
 }
 
@@ -59,5 +58,5 @@ int initChan() {
 }
 
 void chanSend(char *msg) {
-    chan.printf("%s", msg);
+    chan.write("%s", msg);
 }
