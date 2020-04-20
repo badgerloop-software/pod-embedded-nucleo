@@ -18,10 +18,11 @@ void callback() {
     }
 }
 
-void initBeagle() { 
+int initBeagle() { 
     void (*fptr)() = (void (*)()) &callback;
     beagle.attach(fptr);
     isInit = 1;
+    return 0;
 }
 
 int readBeagle(char *buff, int len) {

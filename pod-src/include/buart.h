@@ -17,7 +17,7 @@ float testChanSend(void);
  * Initializes UART connection by attaching an RX callback to the serial channel
  */
 
-void initBeagle();
+int initBeagle();
 
 
 /* beagleRead 

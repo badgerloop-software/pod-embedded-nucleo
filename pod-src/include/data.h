@@ -12,6 +12,7 @@
 #define THERM_1 6
 #define THERM_2 7
 
+uint16_t dumpData();
 
 /* Data reloaded */
 typedef struct Data {

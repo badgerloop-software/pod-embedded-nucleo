@@ -5,8 +5,9 @@
 #include "mcp23017.h"
 #include "boardTelem.h"
 #include "comms.h"
+#include "data.h"
 
-static int numCmds = 12;
+static int numCmds = 13;
 /* These three arrays are for the user/shell. Keep the indexing in sync and
  * they will work well */
 
@@ -22,7 +23,8 @@ static uint16_t (*cmds[])(void) = {
     readTherm2,
     testWriteIOX,
     testReadIOX,
-    testRecvData
+    testRecvData,
+    dumpData
 };
 
 static char *cmdNames[] = {
@@ -37,7 +39,8 @@ static char *cmdNames[] = {
     "readTherm2",
     "testWriteIOX",
     "testReadIOX",
-    "testRecvData"
+    "testRecvData",
+    "dumpData"
 };
 
 static char *cmdDescs[] = {
@@ -52,7 +55,8 @@ static char *cmdDescs[] = {
     "Reads the temperature on thermistor 2",
     "Tests writing to every pin in the IO Expander",
     "Tests reading from every pin in the IO Expander",
-    "Dumps data received over serial"
+    "Dumps data received over serial",
+    "Dumps local master data structure"
 };
 
 void runDebugTerminal() {

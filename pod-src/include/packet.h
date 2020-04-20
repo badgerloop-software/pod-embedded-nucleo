@@ -43,7 +43,7 @@ class BPacket {
             char pData[MIN_DATA_PACKET_SIZE];
             formatData(data, pData);
             for (int i = OFFSET; i < this->size; i++) {
-                this->payload[i] = pData[i];
+                this->payload[i] = pData[i - OFFSET];
             }
         }
 
@@ -68,11 +68,24 @@ class BPacket {
             return size;
         }
 
-        void dump() {
+        static void dump(BPacket *pkt) {
             // Print contents of packet
-            printf("%s\n\r", this->getPayload());
+            printf("DUMPING PACKET:\n\r[");
+            char *payload = pkt->getPayload();
+            int size = pkt->getSize();
+            for (int i = 0; i < size; i++) {
+                printf("%u,", (uint8_t) payload[i]);
+            }
+            printf("]\n\r");
         }
 
+        static void dump(char *pkt, int size) {
+            printf("DUMPING PACKET:\n\r[");
+            for (int i = 0; i < size; i++) {
+                printf("%u,", (uint8_t) pkt[i]);
+            }
+            printf("]\n\r");
+        }
 };
 
 #endif

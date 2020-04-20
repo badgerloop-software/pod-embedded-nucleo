@@ -12,6 +12,8 @@ int initComms() {
 
 int sendDataPacket() {
     BPacket pkt(&data);
+    printf("SENDING THIS PACKET:\n\r");
+    BPacket::dump(&pkt);
     writeBeagle(&pkt);
     return 0;
 }
@@ -26,6 +28,6 @@ int sendCmdPacket() {
 uint16_t testRecvData() {
     char buff[34];
     uint16_t ret = (uint16_t)readBeagle(buff, 34);
-    printf("DATA RECVD: %s\n\r", buff);
+    BPacket::dump(buff, 34);
     return ret;
 }

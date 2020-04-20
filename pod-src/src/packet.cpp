@@ -19,17 +19,17 @@ void BPacket::formatData(Data *data, char *out) {
     /* TODO, try to avoid that magic number :( */
     for (int i = 0; i < 16; i++) {
         if (i % 2) {
-            out[i] = (char) data->boardTelem[i] & 0x00ff;
+            out[i] = (char) data->boardTelem[i / 2] & 0x00ff;
         } else {
-            out[i] = (char) data->boardTelem[i] >> 8;
+            out[i] = (char) data->boardTelem[i / 2] >> 8;
         }
     }
 
     for (int i = 0; i < 16; i++) {
         if (i % 2) {
-            out[i + 16] = (char) data->pressures[i] & 0x00ff;
+            out[i + 16] = (char) data->pressures[i / 2] & 0x00ff;
         } else {
-            out[i + 16] = (char) data->pressures[i] >> 8;
+            out[i + 16] = (char) data->pressures[i / 2] >> 8;
         }
     }
 }
