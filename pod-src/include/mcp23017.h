@@ -41,6 +41,7 @@ class Iox {
         const int iodirb = 0x01;
         int addr8bit;
         I2C *i2c;
+        bool isInit;
     public:
         const int numPins = 16;
         Iox(I2C *i2c, int addr7bit);

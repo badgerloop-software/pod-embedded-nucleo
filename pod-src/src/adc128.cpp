@@ -4,6 +4,7 @@
 Adc::Adc(I2C *i2c, int addr7) {
     this->addr8 = addr7 << 1;
     this->i2c = i2c;
+    this->isInit = false;
 }
 
 int Adc::init() {
@@ -90,7 +91,7 @@ int Adc::init() {
     if (i2c->read(addr8, data, 1)) {
         return 1;
     }
-
+    this->isInit = true; 
     return 0;
 }
 
@@ -99,6 +100,10 @@ int Adc::init() {
 uint16_t Adc::readChannel(AdcChan chan) {
     char cmd[1] = {(char) chan};
     char d[2];
+
+    if (!this->isInit) {
+        return 0;
+    }
 
     if (i2c->write(addr8, cmd, 1)) {
         return 0;
@@ -118,6 +123,10 @@ int Adc::get8BitAddress() {
 int Adc::isBusy() {
     char cmd[1];
     cmd[0] = 0x0C;
+    
+    if (!this->isInit) {
+        return 0;
+    }
 
     if (i2c->write(addr8, cmd, 1)) {
         return 1;    

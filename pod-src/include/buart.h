@@ -4,8 +4,6 @@
 #include "mbed.h"
 #include "packet.h"
 
-int initChan(void);
-
 /* TESTS */
 
 float testChanRead(void);
@@ -13,18 +11,32 @@ float testChanSend(void);
 
 /*********/
 
-class BUart {
-    private:
-        const int BAUD = 9600;
-        const int BUFF_SIZE = 512;
-        UnbufferedSerial chan;
-        CircularBuffer<char, 512> rxBuff;
-        void callback();
-    public:
-        BUart();
-        int read(char *buff, int len);
-        void write(BPacket *pkt);
-};
+/* Nucleo <--> Beaglebone UART API */
 
+/* beagleInit
+ * Initializes UART connection by attaching an RX callback to the serial channel
+ */
+
+void initBeagle();
+
+
+/* beagleRead 
+ * @param char *buff - Places read data here
+ * @param int len    - Size of the buffer
+ * @return int       - The number of bytes we actually read
+ * 
+ * Reads data from the UART connection to the beaglebone
+ */
+
+int readBeagle(char *buff, int len);
+
+
+/* beagleWrite
+ * @param BPacket *pkt  - data packet to send
+ *
+ * Writes a data packet to the UART connection to the beaglebone
+ */
+
+void writeBeagle(BPacket *pkt);
 
 #endif

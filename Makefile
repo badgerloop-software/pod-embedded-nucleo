@@ -33,7 +33,7 @@ rem-flash:
 	@echo "Remote Flash"
 	@echo "-----------------"
 	-scp $(BUILD_DST)/$(BIN) $(PI_UNAME)@$(PI):/media/nucleo_main
-
+	-scp $(BUILD_DST)/$(BIN) $(PI_UNAME)@$(PI):/media/nucleo_uart
 
 rem-force:
 	ssh $(PI_UNAME)@$(PI) sync

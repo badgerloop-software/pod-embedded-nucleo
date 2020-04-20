@@ -87,7 +87,7 @@ void callCmd(int cmd) {
     if (cmd == -1) {
         printf("Invalid Command\n\r");
     } else {
-        printf("Value: %f\n\r", cmds[cmd]());
+        printf("Value: %u\n\r", cmds[cmd]());
     }
 }
  
