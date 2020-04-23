@@ -9,7 +9,7 @@ YOUR_PATH		:= `pwd`
 ##### USER/OS SPECIFIC #####
 
 NUCLEO_PATH    	:= /run/media/$(USERNAME)/NODE_$(NUCLEO_VERSION)# Works for Manjaro (maybe all Linux)
-PATH_TO_GCC_ARM := /home/$(USERNAME)/Badgerloop/gcc-arm/gcc-arm-none-eabi-9-2019-q4-major/bin
+PATH_TO_GCC_ARM := /home/eric/badgerloop/gcc-arm-none-eabi-9-2019-q4-major/bin
 
 ############################
 
@@ -34,9 +34,9 @@ build:
 
 # installs Mbed related stuff
 install:
-	pip install mbed-cli --user
-	git clone https://github.com/ARMmbed/mbed-os
-	cd mbed-os && pip install -r requirements.txt --user && cd ..
+#	pip install mbed-cli --user
+#	git clone https://github.com/ARMmbed/mbed-os
+#	cd mbed-os && pip install -r requirements.txt --user && cd ..
 	mbed config TOOLCHAIN $(COMPILER)
 	mbed config MBED_OS_DIR $(YOUR_PATH)/mbed-os/
 	mbed config TARGET $(TARGET)
