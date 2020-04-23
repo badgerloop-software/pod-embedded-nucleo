@@ -5,6 +5,8 @@ COMPILER       	:= GCC_ARM
 BUILD_DST		:= pod-src/BUILD
 BIN				:= include.bin
 YOUR_PATH		:= `pwd`
+PI				:= 71.90.87.132
+PI_UNAME		:= bloophacker
 
 ##### USER/OS SPECIFIC #####
 
@@ -15,7 +17,9 @@ PATH_TO_GCC_ARM := /home/eric/badgerloop/gcc-arm-none-eabi-9-2019-q4-major/bin
 
 .PHONY: all build flash open install
 
-all: build flash
+all: post build flash
+
+rem: post build rem-flash rem-force
 
 flash: 
 	@echo "-----------------"
@@ -24,6 +28,16 @@ flash:
 	-cp $(BUILD_DST)/$(BIN) $(NUCLEO_PATH)
 	-cp $(BUILD_DST)/$(BIN) $(NUCLEO_PATH)1
 
+rem-flash:
+	@echo "-----------------"
+	@echo "Remote Flash"
+	@echo "-----------------"
+	-scp $(BUILD_DST)/$(BIN) $(PI_UNAME)@$(PI):/media/nucleo_main
+	-scp $(BUILD_DST)/$(BIN) $(PI_UNAME)@$(PI):/media/nucleo_uart
+
+rem-force:
+	ssh $(PI_UNAME)@$(PI) sync
+
 # Lazy way to open a terminal to control a nucleo, can't promise it'll work for
 # you
 open:
@@ -31,6 +45,9 @@ open:
 
 build:
 	mbed compile -v -t $(COMPILER) -m $(TARGET) --source pod-src/include --source pod-src/src --source mbed-os/ --build $(BUILD_DST)
+
+post:
+	cd pod-src/src && python3 POST.py
 
 # installs Mbed related stuff
 install:

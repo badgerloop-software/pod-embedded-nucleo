@@ -1,4 +1,7 @@
 ROOT=.
+<<<<<<< HEAD
+=======
+>>>>>>> 66b5be92526946c7ac7c733d7c90c0fad1a2c73e
 TOOLCHAIN=GCC_ARM
 MBED_OS_DIR=/home/eric/pod-embedded-nucleo/mbed-os/
 TARGET=NUCLEO_L432KC

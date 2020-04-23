@@ -2,3 +2,5 @@ __pycache__
 .hg/
 BUILD/
 pod-src/BUILD/
+pod-src/src/POST.cpp
+pod-src/include/post.h

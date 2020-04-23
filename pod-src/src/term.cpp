@@ -1,15 +1,17 @@
 #include "mbed.h"
-#include "adc128.h"
+#include <stdint.h>
 #include "term.h"
-#include "uart.h"
+#include "buart.h"
 #include "mcp23017.h"
+#include "boardTelem.h"
+#include "comms.h"
+#include "data.h"
 
-static int numCmds = 11;
-extern RawSerial pc;
+static int numCmds = 13;
 /* These three arrays are for the user/shell. Keep the indexing in sync and
  * they will work well */
 
-static float (*cmds[])(void) = {
+static uint16_t (*cmds[])(void) = {
     help,
     read7VRailV,  
     read7VRailA,
@@ -17,10 +19,12 @@ static float (*cmds[])(void) = {
     readBusA,
     read5VRailV,
     read5VRailA,
-    testChanSend,
-    testChanRead,
+    readTherm1,
+    readTherm2,
     testWriteIOX,
-    testReadIOX
+    testReadIOX,
+    testRecvData,
+    dumpData
 };
 
 static char *cmdNames[] = {
@@ -31,10 +35,12 @@ static char *cmdNames[] = {
     "readBusA",
     "read5VRailV",
     "read5VRailA",
-    "testChanSend",
-    "testChanRead",
+    "readTherm1",
+    "readTherm2",
     "testWriteIOX",
-    "testReadIOX"
+    "testReadIOX",
+    "testRecvData",
+    "dumpData"
 };
 
 static char *cmdDescs[] = {
@@ -45,10 +51,12 @@ static char *cmdDescs[] = {
     "Reads the current on the main power bus",
     "Reads the voltage on the 5 volt rail",
     "Reads the current on the 5 volt rail",
-    "Sends a message across the serial channel",
-    "Reads the serial channel",
+    "Reads the temperature on thermistor 1",
+    "Reads the temperature on thermistor 2",
     "Tests writing to every pin in the IO Expander",
-    "Tests reading from every pin in the IO Expander"
+    "Tests reading from every pin in the IO Expander",
+    "Dumps data received over serial",
+    "Dumps local master data structure"
 };
 
 void runDebugTerminal() {
@@ -56,14 +64,13 @@ void runDebugTerminal() {
     callCmd(cmd);
 }
 
-
 int waitForCmd() {
     char buff[100];
     int cnt = 0;
-    pc.printf("Waiting for input...\n\r");
+    printf("Waiting for input...\n\r");
     while (cnt < 99) {
-        buff[cnt] = pc.getc();
-        pc.printf("%c", buff[cnt]);
+        buff[cnt] = getchar();
+        printf("%c", buff[cnt]);
         if (buff[cnt] == '\r' && cnt != 0)
             break;
         else if (buff[cnt] == '\r' && cnt == 0)
@@ -71,7 +78,7 @@ int waitForCmd() {
         cnt += 1;
     }
     buff[cnt] = '\0';
-    pc.printf("\n\r");
+    printf("\n\r");
     for (int i = 0; i < numCmds; i++) {
         if (!strcmp(buff, cmdNames[i])) {
             return i;
@@ -82,18 +89,18 @@ int waitForCmd() {
 
 void callCmd(int cmd) {
     if (cmd == -1) {
-        pc.printf("Invalid Command\n\r");
+        printf("Invalid Command\n\r");
     } else {
-        pc.printf("Value: %f\n\r", cmds[cmd]());
+        printf("Value: %u\n\r", cmds[cmd]());
     }
 }
  
-float help() {
+uint16_t help() {
     int i;
-    pc.printf("Welcome to Ezra's little Mbed Oasis.\n\r");
-    pc.printf("Commands:\n\r");
+    printf("Welcome to Ezra's little Mbed Oasis.\n\r");
+    printf("Commands:\n\r");
     for (i = 0; i < numCmds; i++) {
-        pc.printf("\t%s - %s\n\r", cmdNames[i], cmdDescs[i]);
+        printf("\t%s - %s\n\r", cmdNames[i], cmdDescs[i]);
     }
     return 0;
 }
