@@ -1,3 +1,4 @@
+#include <iostream>
 #include "mbed.h"
 #include <stdint.h>
 #include "term.h"
@@ -7,13 +8,15 @@
 #include "comms.h"
 #include "data.h"
 
+#define CMD_SIZE = 100;
+
 static int numCmds = 13;
+static Command *commandList[13];
 /* These three arrays are for the user/shell. Keep the indexing in sync and
  * they will work well */
-
 static uint16_t (*cmds[])(void) = {
     help,
-    read7VRailV,  
+    read7VRailV,
     read7VRailA,
     readBusV,
     readBusA,
@@ -28,7 +31,7 @@ static uint16_t (*cmds[])(void) = {
 };
 
 static char *cmdNames[] = {
-    "help",
+  /*  "help",
     "read7VRailV",
     "read7VRailA",
     "readBusV",
@@ -40,11 +43,11 @@ static char *cmdNames[] = {
     "testWriteIOX",
     "testReadIOX",
     "testRecvData",
-    "dumpData"
+    "dumpData" */
 };
 
 static char *cmdDescs[] = {
-    "Prints a command list",
+ /*   "Prints a command list",
     "Reads the voltage on the 7 volt rail",
     "Reads the current on the 7 volt rail",
     "Reads the voltage on the main power bus",
@@ -56,12 +59,33 @@ static char *cmdDescs[] = {
     "Tests writing to every pin in the IO Expander",
     "Tests reading from every pin in the IO Expander",
     "Dumps data received over serial",
-    "Dumps local master data structure"
+    "Dumps local master data structure " */
 };
 
+Command::Command (string n, string d, uint16_t exec) {
+    name = n;
+    desc = d;
+    id = nextID++;
+    commandList[id] = this;
+}
+
+int Command::runCommand() {
+    return this->exec();
+return 1;
+}
 void runDebugTerminal() {
-    int cmd = waitForCmd();  // Waits for a command
-    callCmd(cmd);
+    int cmdID = waitForCmd();  // Waits for a command
+    int res = commandList[cmdID].runCommand();
+    if (res == 1) {
+        printf("[Error] \n\r");
+    }
+}
+
+int cmdInput() {
+    string input;
+    printf("Enter a Command: ");
+    std::cin >> input;
+    return 1;
 }
 
 int waitForCmd() {
@@ -87,17 +111,9 @@ int waitForCmd() {
     return -1;
 }
 
-void callCmd(int cmd) {
-    if (cmd == -1) {
-        printf("Invalid Command\n\r");
-    } else {
-        printf("Value: %u\n\r", cmds[cmd]());
-    }
-}
- 
 uint16_t help() {
     int i;
-    printf("Welcome to Ezra's little Mbed Oasis.\n\r");
+    printf("BADGERLOOP UTILITY & TESTING TOOL\n\r"); // Sometimes I think I'm five
     printf("Commands:\n\r");
     for (i = 0; i < numCmds; i++) {
         printf("\t%s - %s\n\r", cmdNames[i], cmdDescs[i]);
