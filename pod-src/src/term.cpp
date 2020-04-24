@@ -75,7 +75,7 @@ return 1;
 }
 void runDebugTerminal() {
     int cmdID = waitForCmd();  // Waits for a command
-    int res = commandList[cmdID].runCommand();
+    int res = commandList[cmdID]->runCommand();
     if (res == 1) {
         printf("[Error] \n\r");
     }

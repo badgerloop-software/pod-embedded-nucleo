@@ -5,6 +5,7 @@ class Command {
     std::string name;
     std::string desc;
     int id;
+    uint16_t (*exec)(void);
     static int nextID;
     public:
     Command(string name, string desc, uint16_t exec);
@@ -12,7 +13,7 @@ class Command {
     string getName() { return name;}
     string getDesc() { return desc;}
     int getID() { return id;}
-  //  uint16_t(*exec)(void);
+    //uint16_t(*exec)(void);
 };
 
 void runDebugTerminal();
