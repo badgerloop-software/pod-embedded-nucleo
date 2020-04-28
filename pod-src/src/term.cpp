@@ -1,4 +1,3 @@
-#include <iostream>
 #include "mbed.h"
 #include <stdint.h>
 #include "term.h"
@@ -8,10 +7,11 @@
 #include "comms.h"
 #include "data.h"
 
-#define CMD_SIZE = 100;
+#define CMD_SIZE  100
+#define NUM_COMMANDS  1
 
-static int numCmds = 13;
-static Command *commandList[13];
+static Command *commandList[NUM_COMMANDS];
+int Command::nextID = 0;
 /* These three arrays are for the user/shell. Keep the indexing in sync and
  * they will work well */
 static uint16_t (*cmds[])(void) = {
@@ -62,7 +62,7 @@ static char *cmdDescs[] = {
     "Dumps local master data structure " */
 };
 
-Command::Command (string n, string d, uint16_t exec) {
+Command::Command (char* n, char* d, uint16_t(*exec)(void)) {
     name = n;
     desc = d;
     id = nextID++;
@@ -70,28 +70,29 @@ Command::Command (string n, string d, uint16_t exec) {
 }
 
 int Command::runCommand() {
-    return this->exec();
-return 1;
+    printf("Running %s\n\r", name);
+    exec();
+    return 1;
 }
+
 void runDebugTerminal() {
+    printf("Badgerloop Utility & Testing Terminal\n\r");
     int cmdID = waitForCmd();  // Waits for a command
+    if (cmdID == -1) {
+        printf("[Error] Command Not Recognized!\n\r");
+        return;
+    }
+    printf("Processing Command ID: %d", cmdID);
     int res = commandList[cmdID]->runCommand();
     if (res == 1) {
         printf("[Error] \n\r");
     }
 }
 
-int cmdInput() {
-    string input;
-    printf("Enter a Command: ");
-    std::cin >> input;
-    return 1;
-}
-
 int waitForCmd() {
     char buff[100];
     int cnt = 0;
-    printf("Waiting for input...\n\r");
+    printf("Waiting for input...\n\r $");
     while (cnt < 99) {
         buff[cnt] = getchar();
         printf("%c", buff[cnt]);
@@ -103,8 +104,8 @@ int waitForCmd() {
     }
     buff[cnt] = '\0';
     printf("\n\r");
-    for (int i = 0; i < numCmds; i++) {
-        if (!strcmp(buff, cmdNames[i])) {
+    for (int i = 0; i < NUM_COMMANDS; i++) {
+        if (!strcmp(buff, commandList[i]->getName())) {
             return i;
         }
     }
@@ -115,8 +116,11 @@ uint16_t help() {
     int i;
     printf("BADGERLOOP UTILITY & TESTING TOOL\n\r"); // Sometimes I think I'm five
     printf("Commands:\n\r");
-    for (i = 0; i < numCmds; i++) {
-        printf("\t%s - %s\n\r", cmdNames[i], cmdDescs[i]);
+    for (i = 0; i < NUM_COMMANDS; i++) {
+   //     printf("\t%s - %s\n\r", commandList[i]->getName(), commandList[i]->getDesc());
     }
     return 0;
 }
+
+Command helpCmd("help", "Shows a list of commands", help);
+

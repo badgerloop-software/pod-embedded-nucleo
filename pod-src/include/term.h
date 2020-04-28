@@ -2,17 +2,17 @@
 #define __TERM_H__
 
 class Command {
-    std::string name;
-    std::string desc;
+    char* name;
+    char* desc;
     int id;
     uint16_t (*exec)(void);
-    static int nextID;
     public:
-    Command(string name, string desc, uint16_t exec);
+    Command(char* name, char* desc, uint16_t(*exec)(void));
     int runCommand();
-    string getName() { return name;}
-    string getDesc() { return desc;}
+    char* getName() { return name;}
+    char* getDesc() { return desc;}
     int getID() { return id;}
+    static int nextID;
     //uint16_t(*exec)(void);
 };
 
