@@ -5,7 +5,7 @@ class Command {
     char* name;
     char* desc;
     int id;
-    uint16_t (*exec)(void);
+    uint16_t (*cmd)(void);
     public:
     Command(char* name, char* desc, uint16_t(*exec)(void));
     int runCommand();

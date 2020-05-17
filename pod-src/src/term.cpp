@@ -8,70 +8,21 @@
 #include "data.h"
 
 #define CMD_SIZE  100
-#define NUM_COMMANDS  1
+#define NUM_COMMANDS  13 // Be sure to update this number when adding commands
 
 static Command *commandList[NUM_COMMANDS];
 int Command::nextID = 0;
-/* These three arrays are for the user/shell. Keep the indexing in sync and
- * they will work well */
-static uint16_t (*cmds[])(void) = {
-    help,
-    read7VRailV,
-    read7VRailA,
-    readBusV,
-    readBusA,
-    read5VRailV,
-    read5VRailA,
-    readTherm1,
-    readTherm2,
-    testWriteIOX,
-    testReadIOX,
-    testRecvData,
-    dumpData
-};
-
-static char *cmdNames[] = {
-  /*  "help",
-    "read7VRailV",
-    "read7VRailA",
-    "readBusV",
-    "readBusA",
-    "read5VRailV",
-    "read5VRailA",
-    "readTherm1",
-    "readTherm2",
-    "testWriteIOX",
-    "testReadIOX",
-    "testRecvData",
-    "dumpData" */
-};
-
-static char *cmdDescs[] = {
- /*   "Prints a command list",
-    "Reads the voltage on the 7 volt rail",
-    "Reads the current on the 7 volt rail",
-    "Reads the voltage on the main power bus",
-    "Reads the current on the main power bus",
-    "Reads the voltage on the 5 volt rail",
-    "Reads the current on the 5 volt rail",
-    "Reads the temperature on thermistor 1",
-    "Reads the temperature on thermistor 2",
-    "Tests writing to every pin in the IO Expander",
-    "Tests reading from every pin in the IO Expander",
-    "Dumps data received over serial",
-    "Dumps local master data structure " */
-};
-
-Command::Command (char* n, char* d, uint16_t(*exec)(void)) {
+Command::Command (char* n, char* d, uint16_t(*run)(void)) {
     name = n;
     desc = d;
     id = nextID++;
+    cmd = *run;
     commandList[id] = this;
 }
 
 int Command::runCommand() {
     printf("Running %s\n\r", name);
-    exec();
+    (*cmd)();
     return 1;
 }
 
@@ -82,9 +33,8 @@ void runDebugTerminal() {
         printf("[Error] Command Not Recognized!\n\r");
         return;
     }
-    printf("Processing Command ID: %d", cmdID);
     int res = commandList[cmdID]->runCommand();
-    if (res == 1) {
+    if (res != 1) {
         printf("[Error] \n\r");
     }
 }
@@ -117,10 +67,22 @@ uint16_t help() {
     printf("BADGERLOOP UTILITY & TESTING TOOL\n\r"); // Sometimes I think I'm five
     printf("Commands:\n\r");
     for (i = 0; i < NUM_COMMANDS; i++) {
-   //     printf("\t%s - %s\n\r", commandList[i]->getName(), commandList[i]->getDesc());
+       printf("\t%s - %s\n\r", commandList[i]->getName(), commandList[i]->getDesc());
     }
     return 0;
 }
-
+// Command Initalizers
 Command helpCmd("help", "Shows a list of commands", help);
+Command read7VRailVCmd("read7VRailV", "Reads the voltage on the 7 Volt rail", read7VRailV);
+Command read7VRailACmd("read7VRailA", "Reads the current on the 7 volt rail", read7VRailA);
+Command readBusVCmd("readBusV", "Reads the voltage on the main power bus", readBusV);
+Command readBusACmd("readBusA", "Reads the current on the main power bus", readBusA);
+Command read5VRailVCmd("read5VRailV", "Reads the voltage on the 5 volt rail", read5VRailV);
+Command read5VRailACmd("read5VRailA", "Reads the current on the 5 volt rail", read5VRailA);
+Command readTherm1Cmd("readTherm1", "Reads the temperature on thermistor 1", readTherm1);
+Command readTherm2Cmd("readTherm2", "Reads the temperature on thermistor 2", readTherm2);
+Command testWriteIOXcmd("testWriteIOX", "Tests writing to every pin in the IO Expander", testWriteIOX);
+Command testReadIOXcmd("testReadIOX", "Tests reading from every pin in the IO Expander", testReadIOX);
+Command testRecvData("testRecvData", "Dumps data recieved over serial" testRecvData);
+Command dumpDataCmd("dumpData", "Dumps local master data structure", dumpData);
 
