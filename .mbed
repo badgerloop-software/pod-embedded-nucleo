@@ -1,9 +1,0 @@
-ROOT=.
-<<<<<<< HEAD
-=======
->>>>>>> 66b5be92526946c7ac7c733d7c90c0fad1a2c73e
-TOOLCHAIN=GCC_ARM
-MBED_OS_DIR=/home/eric/pod-embedded-nucleo/mbed-os/
-TARGET=NUCLEO_L432KC
-GCC_ARM=/home/eric/badgerloop/gcc-arm-none-eabi-9-2019-q4-major/bin
-GCC_ARM_PATH=/home/eric/badgerloop/gcc-arm-none-eabi-9-2019-q4-major/bin
