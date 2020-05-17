@@ -7,7 +7,6 @@
 #include "comms.h"
 #include "data.h"
 
-#define CMD_SIZE  100
 #define NUM_COMMANDS  13 // Be sure to update this number when adding commands
 
 static Command *commandList[NUM_COMMANDS];
@@ -22,8 +21,8 @@ Command::Command (char* n, char* d, uint16_t(*run)(void)) {
 
 int Command::runCommand() {
     printf("Running %s\n\r", name);
-    (*cmd)();
-    return 1;
+   int result = (*cmd)();
+    return result;
 }
 
 void runDebugTerminal() {
@@ -34,7 +33,7 @@ void runDebugTerminal() {
         return;
     }
     int res = commandList[cmdID]->runCommand();
-    if (res != 1) {
+    if (res < 0) { // Error handling if 
         printf("[Error] \n\r");
     }
 }
@@ -83,6 +82,6 @@ Command readTherm1Cmd("readTherm1", "Reads the temperature on thermistor 1", rea
 Command readTherm2Cmd("readTherm2", "Reads the temperature on thermistor 2", readTherm2);
 Command testWriteIOXcmd("testWriteIOX", "Tests writing to every pin in the IO Expander", testWriteIOX);
 Command testReadIOXcmd("testReadIOX", "Tests reading from every pin in the IO Expander", testReadIOX);
-Command testRecvData("testRecvData", "Dumps data recieved over serial" testRecvData);
+Command testRecvDataCmd("testRecvData", "Dumps data recieved over serial", testRecvData);
 Command dumpDataCmd("dumpData", "Dumps local master data structure", dumpData);
 
