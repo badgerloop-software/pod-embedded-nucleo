@@ -33,7 +33,7 @@ void runDebugTerminal() {
         return;
     }
     int res = commandList[cmdID]->runCommand();
-    if (res < 0) { // Error handling if 
+    if (res < 0) { // Error handling if needed in the future
         printf("[Error] \n\r");
     }
 }
