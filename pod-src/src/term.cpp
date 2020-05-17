@@ -7,6 +7,7 @@
 #include "comms.h"
 #include "data.h"
 
+#define CMD_SIZE 100
 #define NUM_COMMANDS  13 // Be sure to update this number when adding commands
 
 static Command *commandList[NUM_COMMANDS];
@@ -27,6 +28,7 @@ int Command::runCommand() {
 
 void runDebugTerminal() {
     printf("Badgerloop Utility & Testing Terminal\n\r");
+    printf("Type \"help\" for a list of commands\n\r");
     int cmdID = waitForCmd();  // Waits for a command
     if (cmdID == -1) {
         printf("[Error] Command Not Recognized!\n\r");
@@ -39,7 +41,7 @@ void runDebugTerminal() {
 }
 
 int waitForCmd() {
-    char buff[100];
+    char buff[CMD_SIZE];
     int cnt = 0;
     printf("Waiting for input...\n\r $");
     while (cnt < 99) {
