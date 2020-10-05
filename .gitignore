@@ -6,3 +6,4 @@ pod-src/src/POST.cpp
 pod-src/include/post.h
 .mbed
 Makefile
+.vscode/

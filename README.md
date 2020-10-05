@@ -8,13 +8,14 @@ git clone https://github.com/badgerloop-software/pod-embedded-nucleo
 cd pod-embedded-nucleo
 ```
 
-Fill out the path to your GCC_ARM in Makefile.example then set it as the Makefile
+Fill out the path to your GCC_ARM, username, and any other enviroment variables in Makefile.example then set it as the Makefile
 ```bash
-mv Makefile.example Makefile
+cp Makefile.example Makefile
 ```
 
 ```bash
 make install # Installs build tools
+make config # Run if you skipped installation
 make build  # Builds the project linked with MbedOS
 make flash  # Flashs (and builds) the project linked with MbedOS
 ```
