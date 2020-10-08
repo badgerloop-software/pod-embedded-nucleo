@@ -39,7 +39,7 @@ on the io expander, you can branch dev-iox from dev: `git checkout -b dev-iox`.
 
 Accessing the Badgerloop Utility & Testing Terminal is a combination of using Secure Shell (SSH) and a serial communication protocall called UART. Follow these steps for best results
 
-1. `make rem` force your latest changes onto the Nucleos
+1. ~`make rem` force your latest changes onto the Nucleos~ Work in progress now that we're switching over to the new MBed Studio. Ask Eric Udlis if you want to test your code.
 2. `ssh developer@hitl.badgerloop.org` Contact Eric Udlis to get your ssh key in the server. **Right now the PI is connected to my home network, for security we do not use passwords**
 3. `screen /dev/ttyACM0` or `screen /dev/ttyACM1` depending on which nucleo you want to view
 
