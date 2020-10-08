@@ -1,5 +1,5 @@
 #include "mbed.h"
-#include <stdint.h>
+#include <cstdint>
 #include "term.h"
 #include "buart.h"
 #include "mcp23017.h"
@@ -47,9 +47,9 @@ int waitForCmd() {
     while (cnt < 99) {
         buff[cnt] = getchar();
         printf("%c", buff[cnt]);
-        if (buff[cnt] == '\r' && cnt != 0)
+        if ((buff[cnt] == '\r' || buff[cnt] == '\n') && cnt != 0)
             break;
-        else if (buff[cnt] == '\r' && cnt == 0)
+        else if ((buff[cnt] == '\r' || buff[cnt] == '\n') && cnt == 0)
             continue;
         cnt += 1;
     }
