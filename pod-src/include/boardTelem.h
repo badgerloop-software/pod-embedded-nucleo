@@ -1,14 +1,16 @@
 #ifndef __BOARD_TELEM_H__
 #define __BOARD_TELEM_H__
 
-int initBoardTelem();
+#include <stdint.h>
 
-float readBusV();
-float readBusA();
-float read5VRailV();
-float read5VRailA();
-float read7VRailA();
-float read7VRailV();
-float readTherm1();
-float readTherm2();
+int initBoardTelem();
+void harvestBoardTelem();
+uint16_t readBusV();
+uint16_t readBusA();
+uint16_t read5VRailV();
+uint16_t read5VRailA();
+uint16_t read7VRailA();
+uint16_t read7VRailV();
+uint16_t readTherm1();
+uint16_t readTherm2();
 #endif

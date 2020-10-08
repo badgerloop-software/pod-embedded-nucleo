@@ -18,7 +18,7 @@ typedef enum IoxPin {
     GPIOB_4,
     GPIOB_5,
     GPIOB_6,
-    GPIOB_7,
+    GPIOB_7
 } IoxPin;
 
 typedef enum IoxVal {
@@ -41,6 +41,7 @@ class Iox {
         const int iodirb = 0x01;
         int addr8bit;
         I2C *i2c;
+        bool isInit;
     public:
         const int numPins = 16;
         Iox(I2C *i2c, int addr7bit);
@@ -59,6 +60,6 @@ class Iox {
 /*int ioxSetDir(IoxPin pin, IoxDir dir);*/
 /*int ioxRead(IoxPin pin);*/
 /*int ioxWrite(IoxPin pin, IoxVal val);*/
-float testWriteIOX();
-float testReadIOX();
+uint16_t testWriteIOX();
+uint16_t testReadIOX();
 #endif

@@ -75,7 +75,7 @@ int Iox::write(IoxPin pin, IoxVal val) {
 
 
 /* TESTS */
-float testWriteIOX() {
+uint16_t testWriteIOX() {
     I2C i2c(PB_7, PB_6);
     Iox iox(&i2c, 0x20);
     for (int i = 0; i < 16; i++) {
@@ -84,10 +84,10 @@ float testWriteIOX() {
         if (iox.write((IoxPin)i, HIGH)) 
             printf("ERROR WRITING PIN\n\r");
     }
-    return 0.0;
+    return 0;
 }
 
-float testReadIOX() {
+uint16_t testReadIOX() {
     I2C i2c(PB_7, PB_6);
     Iox iox(&i2c, 0x20);
     for (int i = 0; i < 16; i++) {
@@ -95,6 +95,6 @@ float testReadIOX() {
             printf("ERROR SETTING DIR\n\r");
         printf("READ FROM PIN: %d\n\r", (int)iox.read((IoxPin)i));
     }
-    return 0.0;
+    return 0;
 
 }

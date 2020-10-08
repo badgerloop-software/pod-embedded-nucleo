@@ -19,6 +19,7 @@ class Adc {
     private:
         int addr8;
         I2C *i2c;
+        bool isInit;
     public:
         Adc(I2C *i2c, int addr7);
         int init(void);

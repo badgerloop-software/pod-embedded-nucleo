@@ -1,17 +1,19 @@
-
 NUCLEO_VERSION 	:= L432KC
 TARGET         	:= NUCLEO_$(NUCLEO_VERSION)
 COMPILER       	:= GCC_ARM
 BUILD_DST		:= pod-src/BUILD
 BIN				:= include.bin
 YOUR_PATH		:= `pwd`
-PI				:= 71.90.87.132
-PI_UNAME		:= bloophacker
+
+#### CHECK WITH YOUR TEAMLEAD TO MAKE SURE THIS INFORMATION IS CORRECT ####
+PI				:= hitl.badgerloop.org
+PI_UNAME		:= ubuntu
+####==================================================================#####
 
 ##### USER/OS SPECIFIC #####
 
 NUCLEO_PATH    	:= /run/media/$(USERNAME)/NODE_$(NUCLEO_VERSION)# Works for Manjaro (maybe all Linux)
-PATH_TO_GCC_ARM := /home/$(USERNAME)/Badgerloop/gcc-arm/gcc-arm-none-eabi-9-2019-q4-major/bin
+PATH_TO_GCC_ARM := /home/eudlis/badgerloop/gcc-arm-none-eabi/bin# Replace with your path
 
 ############################
 
@@ -33,7 +35,7 @@ rem-flash:
 	@echo "Remote Flash"
 	@echo "-----------------"
 	-scp $(BUILD_DST)/$(BIN) $(PI_UNAME)@$(PI):/media/nucleo_main
-
+	-scp $(BUILD_DST)/$(BIN) $(PI_UNAME)@$(PI):/media/nucleo_uart
 
 rem-force:
 	ssh $(PI_UNAME)@$(PI) sync
@@ -54,8 +56,12 @@ install:
 	pip install mbed-cli --user
 	git clone https://github.com/ARMmbed/mbed-os
 	cd mbed-os && pip install -r requirements.txt --user && cd ..
+	config
+
+config:
 	mbed config TOOLCHAIN $(COMPILER)
 	mbed config MBED_OS_DIR $(YOUR_PATH)/mbed-os/
 	mbed config TARGET $(TARGET)
-	mbed config $(COMPILER) $(PATH_TO_GCC_ARM) 
+	mbed config $(COMPILER) $(PATH_TO_GCC_ARM)
 	mbed config GCC_ARM_PATH $(PATH_TO_GCC_ARM)
+
