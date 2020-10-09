@@ -1,4 +1,0 @@
-ROOT=.
-TOOLCHAIN=GCC_ARM
-MBED_OS_DIR=/home/eboley/Badgerloop/pod-embedded-nucleo/mbed-os/
-TARGET=NUCLEO_L432KC
