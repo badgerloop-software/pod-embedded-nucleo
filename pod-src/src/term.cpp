@@ -8,7 +8,7 @@
 #include "data.h"
 
 #define CMD_SIZE 100
-#define NUM_COMMANDS  13 // Be sure to update this number when adding commands
+#define NUM_COMMANDS  15 // Be sure to update this number when adding commands
 
 static Command *commandList[NUM_COMMANDS];
 int Command::nextID = 0;
@@ -72,6 +72,11 @@ uint16_t help() {
     }
     return 0;
 }
+
+uint16_t test() {
+    printf("Hello, for the Badgerloop Utility and Testing Terminal!\n\r");
+    return 0;
+}
 // Command Initalizers
 Command helpCmd("help", "Shows a list of commands", help);
 Command read7VRailVCmd("read7VRailV", "Reads the voltage on the 7 Volt rail", read7VRailV);
@@ -86,4 +91,5 @@ Command testWriteIOXcmd("testWriteIOX", "Tests writing to every pin in the IO Ex
 Command testReadIOXcmd("testReadIOX", "Tests reading from every pin in the IO Expander", testReadIOX);
 Command testRecvDataCmd("testRecvData", "Dumps data recieved over serial", testRecvData);
 Command dumpDataCmd("dumpData", "Dumps local master data structure", dumpData);
+Command testCommand("test", "Test command to make sure printing works", test);
 

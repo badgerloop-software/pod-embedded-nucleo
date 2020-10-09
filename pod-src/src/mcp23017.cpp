@@ -1,5 +1,4 @@
 #include "mbed.h"
-#include <stdbool.h>
 #include "mcp23017.h"
 
 char Iox::readAllPins(int reg) {
