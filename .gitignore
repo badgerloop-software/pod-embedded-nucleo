@@ -7,3 +7,4 @@ pod-src/include/post.h
 .mbed
 Makefile
 .vscode/
+mbed-os/

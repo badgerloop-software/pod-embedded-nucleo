@@ -41,9 +41,8 @@ To get started with Mbed Studio follow this quick guide
 1. Install [Mbed Studio](https://studio.os.mbed.com)
 2. Create an [Mbed OS Account](https://os.mbed.com) - They don't send emails so thumbs up for that
 3. Log into Mbed studio with your mbed os Account
-4. Click the Source Control tab on the left bar (looks like the GitHub fork icon)
-5. Enter the clone repository URL into the "set remote repository" text box
-6. Click the top option on the left bar again (Looks like a fancy "S")
+4. Click File -> Import Program, put the git clone URL in the URL field
+5. Install Mbed OS libraries in the bottom libraries tab if needed. Sometimes on first clone an update is needed.
 7. Set the target as the "NUCLEO-L432KC"
 8. Enjoy programming your Mbed enabled STM Nucleo
 
@@ -60,9 +59,9 @@ Anytime that you add a new sensor or are building for the first time, run the PO
 
 Accessing the Badgerloop Utility & Testing Terminal is a combination of using Secure Shell (SSH) and a serial communication protocall called UART. Follow these steps for best results
 
-1. ~`make rem` force your latest changes onto the Nucleos~ Work in progress now that we're switching over to the new MBed Studio. Ask Eric Udlis if you want to test your code.
+1. Copy your `pod-embedded-nucleo.bin` file from the BUILD/ directory to `ubuntu@hitl.badgerloop.org:/media/nucleo_main` and `ubuntu@hitl.badgerloop.org:/media/nucleo_uart` **Slack Eric Udlis to get the password**
 2. `ssh developer@hitl.badgerloop.org` Contact Eric Udlis to get your ssh key in the server. **Right now the PI is connected to my home network, for security we do not use passwords**
 3. `screen /dev/ttyACM0` or `screen /dev/ttyACM1` depending on which nucleo you want to view
 
 ## FAQ:
--
+- I will add FAQs as they come up
