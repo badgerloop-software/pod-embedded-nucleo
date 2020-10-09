@@ -35,16 +35,17 @@ we can keep track of them!
 Please do all development on a branch from dev. For example, if you want to work
 on the io expander, you can branch dev-iox from dev: `git checkout -b dev-iox`.
 
-### MBed Studio
+### Mbed Studio
 As with any project, there are a million ways to flash an ARM chip. I prefer Mbed Studio because of it's all in one approach to building and flashing our STM32s under the hood. If you would like to use the CLI or some other method, feel free.
 To get started with Mbed Studio follow this quick guide
 1. Install [Mbed Studio](https://studio.os.mbed.com)
 2. Create an [Mbed OS Account](https://os.mbed.com) - They don't send emails so thumbs up for that
 3. Log into Mbed studio with your mbed os Account
-4. Clone this repository
-5. Click File -> Open Workspace, and select the newly clones repository as the folder
-6. Set the target as the "NUCLEO-L432KC"
-7. Enjoy programming your Mbed enabled STM Nucleo
+4. Click the Source Control tab on the left bar (looks like the GitHub fork icon)
+5. Enter the clone repository URL into the "set remote repository" text box
+6. Click the top option on the left bar again (Looks like a fancy "S")
+7. Set the target as the "NUCLEO-L432KC"
+8. Enjoy programming your Mbed enabled STM Nucleo
 
 ### Sensor Development
 If you're writing code for a new peripheral, please create a `<sensor name>.cpp`.
