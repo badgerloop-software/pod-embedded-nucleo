@@ -7,7 +7,15 @@ extern I2C i2c;
 static Iox iox(&i2c, 0x20);
 
 int initBraking() {
-    return iox.ping();
+    if(iox.ping() != 0) return 1;
+    for (int i = 8; i < 16; i++){
+        if(writePin(i, 1) != 0) return 1;
+    }
+    wait_us(2000000);
+    for (int i = 8; i < 16; i++){
+        if(writePin(i, 0) != 0) return 1;
+    }
+    return 0;
 }
 
 // (0-7)=GPIOA_0-7, (8-15)=GPIOB_0-7
@@ -26,6 +34,8 @@ int writePin(int pin, int val){
     return 0;
 }
 
+
+
 int readPin(int pin){
     I2C i2c(PB_7, PB_6);
     Iox iox(&i2c, 0x20);
@@ -40,7 +50,7 @@ int readPin(int pin){
 
 
 uint16_t testBrakeWrite(){
-    for (int i = 0; i < 7; i++){
+    for (int i = 8; i < 16; i++){
         if(writePin(i, 0)){
             printf("ERROR WRITING LOW TO PIN %d\n\r", i);
             return 1;
@@ -54,7 +64,7 @@ uint16_t testBrakeWrite(){
 }
 
 uint16_t testBrakeRead(){
-    for (int i = 7; i < 16; i++){
+    for (int i = 0; i < 8; i++){
         if(readPin(i)){
             printf("ERROR READING FROM PIN %d\n\r", i);
             return 1;
