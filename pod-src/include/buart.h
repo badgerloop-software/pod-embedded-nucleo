@@ -3,11 +3,24 @@
 
 #include "mbed.h"
 #include "packet.h"
+#include <cstdint>
 
 /* TESTS */
 
-float testChanRead(void);
-float testChanSend(void);
+/* testConnection
+ * Calls testChanRead and testChanSend to send an ACK command to the beagle and ensures ACKACK is received
+ */
+uint16_t testConnection(void);
+
+/* testChanRead
+ * reads from rxBuff and ensures ACKACK was received
+ */
+uint16_t  testChanRead(void);
+
+/* testChanSend
+ * sends ACK to beagle
+ */
+uint16_t  testChanSend(void);
 
 /*********/
 
@@ -15,6 +28,7 @@ float testChanSend(void);
 
 /* beagleInit
  * Initializes UART connection by attaching an RX callback to the serial channel
+ * Runs connection test
  */
 
 int initBeagle();

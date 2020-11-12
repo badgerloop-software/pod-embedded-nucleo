@@ -1,6 +1,8 @@
 #include "mbed.h"
 #include "buart.h"
 #include "packet.h"
+#include <cstdint>
+#include <cstring>
 
 
 static const int BAUD = 9600;
@@ -22,6 +24,11 @@ int initBeagle() {
     void (*fptr)() = (void (*)()) &callback;
     beagle.attach(fptr);
     isInit = 1;
+    if(testConnection() != 0){
+        isInit = 0;
+        return 1;
+    }
+    
     return 0;
 }
 
@@ -42,6 +49,38 @@ int readBeagle(char *buff, int len) {
 }
 
 void writeBeagle(BPacket *pkt) {
-    if (!isInit) return;
+    if (isInit != 1) return;
     beagle.write(pkt->getPayload(), pkt->getSize());
+    
 }
+/* testChanRead
+ * reads from rxBuff and ensures ACKACK was received
+ */
+uint16_t  testChanRead(){
+    char buff[3];
+    readBeagle(buff, 3);
+    if(buff[2] != 'k') return 1;
+    return 0;
+}
+
+/* testChanSend
+ * sends ACK to beagle
+ */
+uint16_t  testChanSend(){
+    BPacket ack = BPacket(BPacket::ACK);
+    writeBeagle(&ack);
+    
+    return 0;
+}
+/* testConnection
+ * Calls testChanRead and testChanSend to send an ACK command to the beagle and ensures ACKACK is received
+ */
+uint16_t testConnection(){
+    if(testChanSend() != 0) return 1;
+    while(rxBuff.size() < 3){
+        continue;
+    }
+    if(testChanRead() != 0) return 1;
+    return 0;
+}
+

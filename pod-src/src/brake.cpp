@@ -25,7 +25,7 @@ int writePin(int pin, int val){
 
     if (iox.setDir((IoxPin)pin, DIR_OUT)){
             printf("ERROR SETTING DIR\n\r");
-            return -1;
+            return 1;
     }
     if (iox.write((IoxPin)pin, (IoxVal)val)){ 
             printf("ERROR WRITING PIN\n\r");

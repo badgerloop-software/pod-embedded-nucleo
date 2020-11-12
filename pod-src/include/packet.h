@@ -31,10 +31,10 @@ class BPacket {
         BPacket::Type type;
         
         enum Command {
-            BRAKE,
-            UNBRAKE,
-            ACK,
-            ACKACK
+            BRAKE   = 'b',
+            UNBRAKE = 'u',
+            ACK = 'a',
+            ACKACK = 'k'
         };
         
 
