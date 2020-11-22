@@ -2,21 +2,25 @@
 #include "mcp23017.h"
 #include "brake.h"
 
+#define WAIT_TIME   2000000     //the time the brakes will be clamped during init
+
 extern I2C i2c;
 
 static Iox iox(&i2c, 0x20);
 
 
+
+
 /* initBraking
 * Pings IOX 
-* Writes solenoids high for 2 seconds and then writes low
+* Writes solenoids high for WAIT_TIME seconds and then writes low
 */
 int initBraking() {
     if(iox.ping() != 0) return 1;
     for (int i = 8; i < 16; i++){
         if(writePin(i, 1) != 0) return 1;
     }
-    wait_us(2000000);
+    wait_us(WAIT_TIME);
     for (int i = 8; i < 16; i++){
         if(writePin(i, 0) != 0) return 1;
     }
