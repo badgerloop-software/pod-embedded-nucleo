@@ -6,9 +6,10 @@
 #include "boardTelem.h"
 #include "comms.h"
 #include "data.h"
+#include "brake.h"
 
 #define CMD_SIZE 100
-#define NUM_COMMANDS  15 // Be sure to update this number when adding commands
+#define NUM_COMMANDS  16 // Be sure to update this number when adding commands
 
 static Command *commandList[NUM_COMMANDS];
 int Command::nextID = 0;
@@ -92,4 +93,6 @@ Command testReadIOXcmd("testReadIOX", "Tests reading from every pin in the IO Ex
 Command testRecvDataCmd("testRecvData", "Dumps data recieved over serial", testRecvData);
 Command dumpDataCmd("dumpData", "Dumps local master data structure", dumpData);
 Command testCommand("test", "Test command to make sure printing works", test);
+Command testBrakeWriteCmd("testBrakeWrite", "Writes to GPIOA pins", testBrakeWrite);
+Command testBrakeReadCmd("testBrakeRead", "Reads from GPIOB pins", testBrakeRead);
 

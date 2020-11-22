@@ -4,9 +4,10 @@
 char Iox::readAllPins(int reg) {
     char cmd[1];
     cmd[0] = reg;
-    i2c->write(addr8bit, cmd, 1);
+    if(i2c->write(addr8bit, cmd, 1)!= 0) printf("I2C write error\n\r");
+    
     cmd[0] = 0;
-    i2c->read(addr8bit, cmd, 1);
+    if(i2c->read(addr8bit, cmd, 1)!= 0) printf("I2C read error\n\r");
     return cmd[0];
 }
 
@@ -30,7 +31,7 @@ int Iox::ping() {
     cmd[1] = 0x00;
 
     /* Gets Manufac. ID, not sure if we care */
-    if (i2c->write(addr8bit, cmd, 2)) {
+    if (i2c->write(addr8bit, cmd, 2) != 0) {
         return 1;
     }
 
@@ -50,7 +51,7 @@ int Iox::setDir(IoxPin pin, IoxDir dir) {
     } else {
         cmd[1] = readAllPins(reg) | (1 << getPinNum(pin));
     }
-    return i2c->write(addr8bit, cmd, 2);
+    return i2c->write(addr8bit, cmd, 2) != 0;
 }
 
 IoxVal Iox::read(IoxPin pin) {
@@ -69,7 +70,7 @@ int Iox::write(IoxPin pin, IoxVal val) {
     } else {
         cmd[1] = readAllPins(reg) & ~(1 << pinNum);
     }
-    return i2c->write(addr8bit, cmd, 2);
+    return i2c->write(addr8bit, cmd, 2) != 0;
 }
 
 
