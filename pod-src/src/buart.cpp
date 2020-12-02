@@ -6,17 +6,26 @@
 
 
 static const int BAUD = 9600;
-static const int BUFF_SIZE = 512;
 static int isInit = 0;
 
+
 static UnbufferedSerial beagle(PA_9, PA_10, BAUD);
-static CircularBuffer<char, BUFF_SIZE> rxBuff;
+
+int commandIncoming = 0;
+int dataIncoming = 0;
+
 
 void callback() {
     if (!rxBuff.full()) {
         char buff[1];
         beagle.read(buff, 1);
         rxBuff.push(buff[0]);
+        
+        char checkBuff;
+        rxBuff.peek(checkBuff);
+        printf("%c", checkBuff);
+        if(checkBuff == 'c') commandIncoming = 1;
+        if(checkBuff == 'd') dataIncoming = 1;
     }
 }
 
@@ -50,8 +59,7 @@ int readBeagle(char *buff, int len) {
 
 void writeBeagle(BPacket *pkt) {
     if (isInit != 1) return;
-    beagle.write(pkt->getPayload(), pkt->getSize());
-    
+    beagle.write(pkt->getPayload(), pkt->getSize());   
 }
 /* testChanRead
  * reads from rxBuff and ensures ACKACK was received

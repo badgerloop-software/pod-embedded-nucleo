@@ -34,7 +34,8 @@ class BPacket {
             BRAKE   = 'b',
             UNBRAKE = 'u',
             ACK = 'a',
-            ACKACK = 'k'
+            ACKACK = 'k',
+            INVALID = 'i'
         };
         
 
