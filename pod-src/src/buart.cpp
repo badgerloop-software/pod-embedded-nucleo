@@ -23,7 +23,6 @@ void callback() {
         
         char checkBuff;
         rxBuff.peek(checkBuff);
-        printf("%c", checkBuff);
         if(checkBuff == 'c') commandIncoming = 1;
         if(checkBuff == 'd') dataIncoming = 1;
     }
@@ -32,12 +31,12 @@ void callback() {
 int initBeagle() { 
     void (*fptr)() = (void (*)()) &callback;
     beagle.attach(fptr);
-    isInit = 1;
+    
     if(testConnection() != 0){
         isInit = 0;
         return 1;
     }
-    
+    isInit = 1;
     return 0;
 }
 
@@ -67,6 +66,7 @@ void writeBeagle(BPacket *pkt) {
 uint16_t  testChanRead(){
     char buff[3];
     readBeagle(buff, 3);
+    printf("read: %s\n", buff);
     if(buff[2] != 'k') return 1;
     return 0;
 }
