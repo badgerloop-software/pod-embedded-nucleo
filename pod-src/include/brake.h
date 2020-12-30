@@ -1,6 +1,8 @@
 #ifndef __BRAKE_H__
 #define __BRAKE_H__
 
+
+
 /* initBraking
 * Pings IOX 
 * Writes solenoids high for 2 seconds and then writes low
@@ -42,4 +44,6 @@ uint16_t testBrakeWrite(void);
 * reads from all A pins and returns 1 if error occurs
 */
 uint16_t testBrakeRead(void);
+
+
 #endif

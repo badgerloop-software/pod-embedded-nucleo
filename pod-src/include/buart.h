@@ -5,13 +5,6 @@
 #include "packet.h"
 #include <cstdint>
 
-extern int commandIncoming; //1 when a command packet is in rxBuff
-extern int dataIncoming; //1 when a data packet is in rxBuff
-
-
-static const int BUFF_SIZE = 512;
-static CircularBuffer<char, BUFF_SIZE> rxBuff;
-
 /* TESTS */
 
 /* testConnection
@@ -60,4 +53,9 @@ int readBeagle(char *buff, int len);
 
 void writeBeagle(BPacket *pkt);
 
+
+/* handleIncoming
+ * Handles incoming data and command packets from beaglebone
+ */
+int handleIncoming(void);
 #endif
