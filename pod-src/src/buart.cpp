@@ -17,6 +17,13 @@ static CircularBuffer<char, BUFF_SIZE> rxBuff;
 int commandIncoming = 0;
 int dataIncoming = 0;
 
+//Commands
+BPacket cmd_ackack = BPacket::ACKACK;
+BPacket cmd_brake = BPacket::BRAKE;
+BPacket cmd_unbrake = BPacket::UNBRAKE;
+BPacket cmd_ack = BPacket::ACK;
+BPacket cmd_invalid = BPacket::INVALID;
+
 void callback() {
     if (!rxBuff.full()) {
         char buff[1];
@@ -70,7 +77,7 @@ void writeBeagle(BPacket *pkt) {
 uint16_t  testChanRead(){
     char buff[3];
     readBeagle(buff, 3);
-    if(buff[2] != 'k') return 1;
+    if(buff[2] != 'a') return 1;
     return 0;
 }
 
@@ -78,8 +85,7 @@ uint16_t  testChanRead(){
  * sends ACK to beagle
  */
 uint16_t  testChanSend(){
-    BPacket ack = BPacket(BPacket::ACK);
-    writeBeagle(&ack);
+    writeBeagle(&cmd_ackack);
     
     return 0;
 }
@@ -87,11 +93,19 @@ uint16_t  testChanSend(){
  * Calls testChanRead and testChanSend to send an ACK command to the beagle and ensures ACKACK is received
  */
 uint16_t testConnection(){
-    if(testChanSend() != 0) return 1;
+    printf("Beginning testConnection.\n");
     while(rxBuff.size() < 3){
         continue;
     }
-    if(testChanRead() != 0) return 1;
+    printf("rxbuff size = %d\n", rxBuff.size());
+    if(testChanRead() != 0) {
+        printf("failed testChanRead\n");
+        return 1;
+    }
+    if(testChanSend() != 0) {
+        printf("failed testChansend\n");
+        return 1;
+    }
     return 0;
 }
 
@@ -112,31 +126,31 @@ int handleIncoming(){
         if(rxBuff.size() <3) return 1; //ERROR: command not received
         char buff[3];
         readBeagle(buff, 3);
-        BPacket cmd = BPacket::ACK;
         switch (buff[2]){
             //brake
             case 'b':{
                     printf("BRAKING\n");
                     if(brake() != 0){
+                        writeBeagle(&cmd_invalid);
                         return 1;
                     } 
-                    else writeBeagle(&cmd);
+                    else writeBeagle(&cmd_ack);
                     return 0;
                 }
             //unbrake
             case 'u':{
                     printf("UNBRAKING\n");
                     if(unBrake() != 0){
+                        writeBeagle(&cmd_invalid);
                         return 1;
                     }
-                    else writeBeagle(&cmd);
+                    else writeBeagle(&cmd_ack);
                     return 0;
                 }
             //ack
             case 'a':{
                     printf("ACK Received\n");
-                    BPacket ackack = BPacket::ACKACK;
-                    writeBeagle(&ackack);
+                    writeBeagle(&cmd_ackack);
                     return 0;
                 }
             //ackack
@@ -147,8 +161,7 @@ int handleIncoming(){
             //anything else
             default:{
                 printf("INVALID command received\n");
-                BPacket invalid = BPacket::INVALID;
-                writeBeagle(&invalid);
+                writeBeagle(&cmd_invalid);
                 return 1;
             }
         }
