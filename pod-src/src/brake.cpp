@@ -6,7 +6,7 @@
 
 extern I2C i2c;
 
-static Iox iox(&i2c, 0x20);
+static Iox iox(&i2c, 0x26);
 
 
 
@@ -43,7 +43,7 @@ int initBraking() {
 */
 int writePin(int pin, int val){
     I2C i2c(PB_7, PB_6);
-    Iox iox(&i2c, 0x20);
+    Iox iox(&i2c, 0x26);
 
     if (iox.setDir((IoxPin)pin, DIR_OUT)){
             printf("ERROR SETTING DIR\n\r");
